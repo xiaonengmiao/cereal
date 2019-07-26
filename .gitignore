@@ -9,4 +9,4 @@ __pycache__/
 .idea/
 .pytest_cache/
 cereal.egg-info/
-
+.ipynb_checkpoints/
