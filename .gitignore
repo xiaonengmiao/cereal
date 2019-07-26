@@ -1,0 +1,12 @@
+!*.py
+!Makefile
+!doc/
+!cereal/bin/
+!doc/source/*.rst
+doc/build/
+.DS_Store
+__pycache__/
+.idea/
+.pytest_cache/
+cereal.egg-info/
+
