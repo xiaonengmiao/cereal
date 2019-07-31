@@ -1,7 +1,7 @@
 #!/bin/env python
 """cereal: a Python library for exploring cryptocurrency markets.
 usage: cereal [--version] [--debug] [--config=<path>] [--help]
-           <command> [<args>...]
+           [--telegram] [<command>] [<args>...]
 
 Options:
     -d, --debug           Show debugging info.
@@ -31,7 +31,11 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 """
 
+import os
+import json
 import logging
+import telegram
+
 from docopt import docopt
 from cereal import version
 
@@ -77,5 +81,30 @@ if __name__ == "__main__":
     LOGGER.debug("Received global arguments:\n%s", log_dict(ARGUMENTS, 1))
 
     # TODO: read config file and handle commands
+    if ARGUMENTS['--config']:
+        with open(ARGUMENTS['--config']) as config_file:
+            config = json.load(config_file)
+        LOGGER.debug("Loaded config file:\n%s", config)
+    else:
+        config_path = os.path.join(os.path.abspath(os.path.dirname(__file__)), '..', 'utils', 'config.json')
+        with open(config_path) as config_file:
+            config = json.load(config_file)
+        LOGGER.debug("Loaded config file:\n%s", config)
+
+    # set telegram monitor
+    if ARGUMENTS['--telegram']:
+        bot_chatID = config.get("telegram", []).get("bot_chatID", [])
+        bot_token = config.get("telegram", []).get("bot_token", [])
+        bot = telegram.Bot(token=bot_token)
+        bot.send_message(bot_chatID, 'Hi, this is cereal, will serve as cereal reporter!')
+        LOGGER.debug("Inited telegram bot")
+
+    if ARGUMENTS['<command>'] == 'start':
+        print("start")
+    elif ARGUMENTS['<command>'] == 'stop':
+        print("stop")
+    else:
+        pass
+
 
 # vim: ft=python

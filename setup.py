@@ -43,6 +43,7 @@ def main():
           install_requires=[
               "sphinx",
               "docopt",
+              "python-telegram-bot",
           ],
           )
 
