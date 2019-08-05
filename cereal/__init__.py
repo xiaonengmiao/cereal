@@ -24,3 +24,5 @@ __doc__ = """
 Cereal is a Python library for exploring cryptocurrency markets.
 CEREAL is a recursive acronym for Crypto Explorer Even Analysis and Learn.
 """
+
+from .monitor.monitor import Monitor
