@@ -17,7 +17,8 @@ Overview
    :maxdepth: 2
    :caption: Contents:
 
-
+   monitor.rst
+   utils.rst
 
 Indices and tables
 ==================

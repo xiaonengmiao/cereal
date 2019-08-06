@@ -7,6 +7,7 @@ Options:
     -d, --debug           Show debugging info.
     -h, --help            Show this help screen.
     -v, --version         Show cereal version.
+    -t, --telegram        Use telegram bot.
 """
 
 __copyright__ = "Copyright (C) 2019 Techcat_ Haohan Li"
@@ -33,6 +34,7 @@ THE SOFTWARE.
 
 import os
 import json
+import atexit
 import logging
 import telegram
 import subprocess
@@ -40,6 +42,7 @@ import subprocess
 from docopt import docopt
 from cereal import version
 from cereal import Monitor
+from apscheduler.schedulers.blocking import BlockingScheduler
 
 LOGGER = logging.getLogger("cereal")
 
@@ -111,12 +114,24 @@ if __name__ == "__main__":
             exit(0)
 
     if ARGUMENTS['<command>'] == 'monitor':
+        url = config.get("url", "http://localhost:9922")
+        monitor = Monitor(url, config, ARGUMENTS['--telegram'])
+        job_defaults = {'coalesce': False, 'max_instances': 5}
+        scheduler = BlockingScheduler(timezone="UTC", job_defaults=job_defaults)
         if ARGUMENTS['<args>']:
-            url = config.get("url", "http://localhost:9922")
-            monitor = Monitor(url, config, ARGUMENTS['--telegram'])
-            monitor.trigger('ARMRunwkp5TGEYuqHbKZV12H8xEWtsUUkLd')
+            monitor.trigger('{}'.format(ARGUMENTS['<args>'][0]))
+            scheduler.add_job(lambda: monitor.trigger('{}'.format(ARGUMENTS['<args>'][0])), trigger='interval',
+                              minutes=5)
         else:
-            pass
+            monitor.trigger()
+            scheduler.add_job(lambda: monitor.trigger(), trigger='interval', minutes=5)
+        scheduler.print_jobs()
+        try:
+            scheduler.start()
+        except KeyboardInterrupt as ex:
+            print('\n')
+            LOGGER.debug('Got SIGTERM! Terminating...')
+            atexit.register(lambda: scheduler.shutdown())
 
     if ARGUMENTS['<command>'] == 'start':
         print("start")
