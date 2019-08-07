@@ -4,4 +4,4 @@
 
 Cereal is a Python library for exploring cryptocurrency markets.
 
-CEREAL is a recursive acronym for Crypto Explorer Even Analysis and Learn.
+CEREAL is a recursive acronym for Crypto ExploreR Even Analysis and Learn.
