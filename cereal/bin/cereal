@@ -96,7 +96,7 @@ if __name__ == "__main__":
             config = json.load(config_file)
         LOGGER.debug("Loaded config file:\n%s", config)
 
-    # set telegram monitor
+    # set telegram chat bot
     if ARGUMENTS['--telegram']:
         bot_chatID = config.get("telegram", []).get("bot_chatID", [])
         bot_token = config.get("telegram", []).get("bot_token", [])
@@ -104,15 +104,17 @@ if __name__ == "__main__":
         bot.send_message(bot_chatID, 'Hi, this is cereal, will serve as cereal reporter!')
         LOGGER.debug("Inited telegram bot")
 
+    # handle VSYS node deployment
     if ARGUMENTS['<command>'] == 'deploy':
         deploy_path = os.path.join(os.path.abspath(os.path.dirname(__file__)), '..', 'shell', 'deploy.sh')
         os.popen('chmod +x {}'.format(deploy_path))
         try:
             subprocess.call(['{}'.format(deploy_path)])
         except KeyboardInterrupt:
-            print('\n')
+            LOGGER.info('Quiting deploy process....')
             exit(0)
 
+    # handle VSYS address monitoring
     if ARGUMENTS['<command>'] == 'monitor':
         url = config.get("url", "http://localhost:9922")
         monitor = Monitor(url, config, ARGUMENTS['--telegram'])
@@ -137,8 +139,7 @@ if __name__ == "__main__":
         try:
             scheduler.start()
         except KeyboardInterrupt as ex:
-            print('\n')
-            LOGGER.debug('Got SIGTERM! Terminating...')
+            LOGGER.error('Got SIGTERM! Terminating...')
             atexit.register(lambda: scheduler.shutdown())
 
     if ARGUMENTS['<command>'] == 'start':
