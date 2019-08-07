@@ -119,11 +119,19 @@ if __name__ == "__main__":
         job_defaults = {'coalesce': False, 'max_instances': 5}
         scheduler = BlockingScheduler(timezone="UTC", job_defaults=job_defaults)
         if ARGUMENTS['<args>']:
-            monitor.trigger('{}'.format(ARGUMENTS['<args>'][0]))
+            try:
+                monitor.trigger('{}'.format(ARGUMENTS['<args>'][0]))
+            except KeyError as e:
+                LOGGER.error('Monitor address illegal: ' + str(e))
+                exit(0)
             scheduler.add_job(lambda: monitor.trigger('{}'.format(ARGUMENTS['<args>'][0])), trigger='interval',
                               minutes=5)
         else:
-            monitor.trigger()
+            try:
+                monitor.trigger()
+            except KeyError as e:
+                LOGGER.error('Monitor address illegal: ' + str(e))
+                exit(0)
             scheduler.add_job(lambda: monitor.trigger(), trigger='interval', minutes=5)
         scheduler.print_jobs()
         try:

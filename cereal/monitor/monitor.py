@@ -57,20 +57,36 @@ class Monitor(object):
 
     def trigger(self, address=None):
         if address:
-            url_tx = os.path.join('transactions', 'address', address, 'limit', '4500')
-            txs = self.wrapper.request(url_tx)[0]
-            cnt_time = int(time.time()*1000000000)//6000000000*6000000000
-            check_time = 5*60*1000000000
-            txs = [x for x in txs if x['timestamp'] > cnt_time-check_time]
-            # txs = txs[:10]
+            txs = self._get_txs(address)
             if txs:
                 df = make_visualizer(txs)
                 self.logger.info(df)
                 if self.bot:
-                    for index, row in df.iterrows():
-                        self.bot.send_message(self.bot_chatID, row.to_string())
-            return txs
+                    df.to_csv('/tmp/cereal_txs.csv')
+                    with open('/tmp/cereal_txs.csv', 'rb') as cereal_txs:
+                        self.bot.send_document(self.bot_chatID, cereal_txs)
+                    os.remove('/tmp/cereal_txs.csv')
         else:
             for s in self.config.get("address", []):
-                self.trigger(s)
+                txs = self._get_txs(s)
+                if txs:
+                    df = make_visualizer(txs)
+                    self.logger.info(df)
+                    if self.bot:
+                        if not os.path.exists('/tmp/cereal_txs.csv'):
+                            df.to_csv('/tmp/cereal_txs.csv')
+                        else:
+                            df.to_csv('/tmp/cereal_txs.csv', mode='a', header=False)
+            if os.path.exists('/tmp/cereal_txs.csv') and self.bot:
+                with open('/tmp/cereal_txs.csv', 'rb') as cereal_txs:
+                    self.bot.send_document(self.bot_chatID, cereal_txs)
+                os.remove('/tmp/cereal_txs.csv')
 
+    def _get_txs(self, address):
+        url_tx = os.path.join('transactions', 'address', address, 'limit', '4500')
+        txs = self.wrapper.request(url_tx)[0]
+        cnt_time = int(time.time() * 1000000000) // 6000000000 * 6000000000
+        check_time = 5 * 60 * 1000000000
+        # txs = [x for x in txs if x['timestamp'] > cnt_time-check_time]
+        txs = txs[:2]
+        return txs
