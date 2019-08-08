@@ -21,9 +21,5 @@ THE SOFTWARE.
 """
 
 __doc__ = """
-Cereal is a Python library for exploring cryptocurrency markets.
-CEREAL is a recursive acronym for Crypto Explorer Even Analysis and Learn.
+:mod:`cereal.chatbot` provides a chat bot for Cereal.
 """
-
-from .monitor.monitor import Monitor
-from .chatbot.chatbot import chatbot

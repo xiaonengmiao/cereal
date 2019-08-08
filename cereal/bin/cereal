@@ -42,6 +42,7 @@ import subprocess
 from docopt import docopt
 from cereal import version
 from cereal import Monitor
+from cereal import chatbot
 from apscheduler.schedulers.blocking import BlockingScheduler
 
 LOGGER = logging.getLogger("cereal")
@@ -124,7 +125,7 @@ if __name__ == "__main__":
             try:
                 monitor.trigger('{}'.format(ARGUMENTS['<args>'][0]))
             except KeyError as e:
-                LOGGER.error('Monitor address illegal: ' + str(e))
+                LOGGER.info('Monitor address illegal: ' + str(e))
                 exit(0)
             scheduler.add_job(lambda: monitor.trigger('{}'.format(ARGUMENTS['<args>'][0])), trigger='interval',
                               minutes=5)
@@ -139,8 +140,19 @@ if __name__ == "__main__":
         try:
             scheduler.start()
         except KeyboardInterrupt as ex:
-            LOGGER.error('Got SIGTERM! Terminating...')
+            LOGGER.info('Got SIGTERM! Terminating...')
             atexit.register(lambda: scheduler.shutdown())
+
+    # handle VSYS chat bot
+    if ARGUMENTS['<command>'] == 'chatbot':
+        bot_token = config.get("telegram", []).get("bot_token", [])
+        LOGGER.info('Starting chat bot...')
+        LOGGER.info('Feel free to ask me on telegram now!')
+        try:
+            chatbot(bot_token)
+        except KeyboardInterrupt as ex:
+            LOGGER.info('Quit chat bot...')
+            exit(0)
 
     if ARGUMENTS['<command>'] == 'start':
         print("start")
