@@ -25,6 +25,7 @@ __doc__ = """
 """
 
 import os
+import json
 import logging
 import requests
 import telegram
@@ -52,18 +53,6 @@ class ChatBot(ChatBotBase):
     def _init_bot(self):
         # Telegram Bot Authorization Token
         self.bot = telegram.Bot(token=self.bot_token)
-
-    def get_response(self, msg):
-        if len(msg) > 0 and msg[0] == 'A':
-            url_tx = os.path.join('transactions', 'address', msg, 'limit', '20')
-            txs = self.wrapper.request(url_tx)[0]
-            if txs:
-                df = make_visualizer(txs)
-                return df
-            else:
-                return
-        else:
-            pass
 
     def run(self):
         """Run the bot."""
@@ -95,23 +84,45 @@ class ChatBot(ChatBotBase):
                 message = update.message.text
                 if update.message.text[0] == '/':
                     try:
-                        df = self.get_response(message[1:])
+                        reply = self.get_response(message[1:])
                     except KeyError:
-                        df = None
+                        reply = None
                         self.logger.info('{} is not valid address'.format(message[1:]))
                         update.message.reply_text('{} is not valid address'.format(message[1:]))
-                    if isinstance(df, pd.DataFrame):
-                        self.logger.info(df)
-                        df.to_csv('/tmp/cereal_chat_bot_txs.csv')
+                    if isinstance(reply, pd.DataFrame) and not reply.empty:
+                        self.logger.info(reply)
+                        reply.to_csv('/tmp/cereal_chat_bot_txs.csv')
                         with open('/tmp/cereal_chat_bot_txs.csv', 'rb') as cereal_chat_bot_txs:
                             update.message.reply_document(cereal_chat_bot_txs)
                         os.remove('/tmp/cereal_chat_bot_txs.csv')
+                    elif isinstance(reply, str) and reply:
+                        self.logger.info(reply)
+                        update.message.reply_text(reply)
                 else:
                     # reply = get_response_tuling(message)
                     # self.logger.info(reply)
                     # update.message.reply_text(reply)
                     default_reply = message
                     update.message.reply_text(default_reply)
+
+    def get_response(self, msg):
+        if len(msg) > 0:
+            if msg[0] == 'A':
+                url = os.path.join('transactions', 'address', msg, 'limit', '20')
+                txs = self.wrapper.request(url)[0]
+                return make_visualizer(txs)
+            elif msg == 'height':
+                url = os.path.join('blocks', 'height')
+                response = self.wrapper.request(url)
+                return json.dumps(response)
+            elif msg == 'lastblock':
+                url = os.path.join('blocks', 'last')
+                response = self.wrapper.request(url)
+                return json.dumps(make_visualizer(response, 'block'))
+            else:
+                return
+        else:
+            return
 
 
 # KEY = '4831402b6fad4fc78293db9f99972435'

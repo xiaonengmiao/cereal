@@ -29,18 +29,32 @@ import pandas as pd
 from datetime import datetime
 
 
-def make_visualizer(txs):
-    """Visualise txs in table."""
+def make_visualizer(data, vis_type=None):
+    """Visualise data in table."""
 
-    df = pd.DataFrame()
-    df['timestamp'] = [datetime.fromtimestamp(x['timestamp'] // 1000000000).strftime('%Y-%m-%d %H:%M:%S') for x in txs]
-    df['id'] = [x['id'] for x in txs]
-    df['height'] = [x['height'] for x in txs]
-    df['type'] = [x['type'] for x in txs]
-    df['sender'] = [x['proofs'][0]['publicKey'] for x in txs]
-    df['receipt'] = [x['receipt'] if 'receipt' in x else None for x in txs]
-    df['fee'] = [x['fee']/100000000 for x in txs]
-    df['amount'] = ['{:.4f}'.format(x['amount']/100000000) if 'amount' in x else 0 for x in txs]
-    df['status'] = [x['status'] for x in txs]
-    df['leaseId'] = [x['leaseId'] if 'leaseId' in x else None for x in txs]
-    return df
+    if vis_type is None:
+        df = pd.DataFrame()
+        df['timestamp'] = [datetime.fromtimestamp(x['timestamp'] // 1000000000).strftime('%Y-%m-%d %H:%M:%S') for x in data]
+        df['id'] = [x['id'] for x in data]
+        df['height'] = [x['height'] for x in data]
+        df['type'] = [x['type'] for x in data]
+        df['sender'] = [x['proofs'][0]['publicKey'] for x in data]
+        df['receipt'] = [x['receipt'] if 'receipt' in x else None for x in data]
+        df['fee'] = [x['fee']/100000000 for x in data]
+        df['amount'] = ['{:.4f}'.format(x['amount']/100000000) if 'amount' in x else 0 for x in data]
+        df['status'] = [x['status'] for x in data]
+        df['leaseId'] = [x['leaseId'] if 'leaseId' in x else None for x in data]
+        vis = df
+    elif vis_type is 'block':
+        dic = {'height': data['height'], 'transaction number': data['transaction count'],
+               'mint time': datetime.fromtimestamp(data['SPOSConsensus']['mintTime'] // 1000000000).strftime('%Y-%m-%d %H:%M:%S'),
+               'mint balance': data['SPOSConsensus']['mintBalance']/100000000,
+               'timestamp': datetime.fromtimestamp(data['timestamp'] // 1000000000).strftime('%Y-%m-%d %H:%M:%S'),
+               'block size': data['blocksize'], 'fee': data['fee']/100000000,
+               'generator': data['generator'], 'signature': data['signature'],
+               'recipient': data['transactions'][-1]['recipient']}
+        vis = dic
+    else:
+        raise ValueError("Invalid vis_type %s" % str(vis_type))
+    return vis
+
