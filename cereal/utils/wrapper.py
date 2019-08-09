@@ -21,7 +21,7 @@ THE SOFTWARE.
 """
 
 __doc__ = """
-:mod:`cereal.utils.wrapper` provides utilities for VSYS chain api wrapper.
+:mod:`cereal.utils.wrapper` provides utilities for VSYS chain api.
 """
 
 import os
