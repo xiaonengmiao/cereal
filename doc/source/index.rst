@@ -18,6 +18,7 @@ Overview
    :caption: Contents:
 
    monitor.rst
+   chatbot.rst
    utils.rst
 
 Indices and tables
