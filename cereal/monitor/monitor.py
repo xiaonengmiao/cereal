@@ -29,18 +29,19 @@ import time
 import logging
 import telegram
 
+from . import MonitorBase
 from ..utils.wrapper import Wrapper
 from ..utils.tools import make_visualizer
 
 
-class Monitor(object):
+class Monitor(MonitorBase):
     """Class for monitoring."""
 
-    def __init__(self, url, config, bot=False, chain_id='M'):
-        self.url = url
-        self.config = config
+    def __init__(self, url, bot_chat_id, bot_token, address, bot=False, chain_id='M'):
+        super().__init__(url, bot_chat_id, bot_token)
+        self.address = address
         self.chain_id = chain_id
-        self.wrapper = Wrapper(url)
+        self.wrapper = Wrapper(self.url)
 
         if bot:
             self._init_bot()
@@ -50,10 +51,9 @@ class Monitor(object):
         self.logger = logging.getLogger(__name__)
 
     def _init_bot(self):
-        self.bot_chatID = self.config.get("telegram", []).get("bot_chatID", [])
-        bot_token = self.config.get("telegram", []).get("bot_token", [])
-        self.bot = telegram.Bot(token=bot_token)
-        self.bot.send_message(self.bot_chatID, 'Hi, this is cereal, chat bot inited!')
+        # Telegram Bot Authorization Token
+        self.bot = telegram.Bot(token=self.bot_token)
+        self.bot.send_message(self.bot_chat_id, 'Hi, this is cereal, chat bot inited!')
 
     def trigger(self, address=None):
         if address:
@@ -62,31 +62,31 @@ class Monitor(object):
                 df = make_visualizer(txs)
                 self.logger.info(df)
                 if self.bot:
-                    df.to_csv('/tmp/cereal_txs.csv')
-                    with open('/tmp/cereal_txs.csv', 'rb') as cereal_txs:
-                        self.bot.send_document(self.bot_chatID, cereal_txs)
-                    os.remove('/tmp/cereal_txs.csv')
+                    df.to_csv('/tmp/cereal_monitor_txs.csv')
+                    with open('/tmp/cereal_monitor_txs.csv', 'rb') as cereal_monitor_txs:
+                        self.bot.send_document(self.bot_chat_id, cereal_monitor_txs)
+                    os.remove('/tmp/cereal_monitor_txs.csv')
         else:
-            for s in self.config.get("address", []):
+            for s in self.address:
                 txs = self._get_txs(s)
                 if txs:
                     df = make_visualizer(txs)
                     self.logger.info(df)
                     if self.bot:
-                        if not os.path.exists('/tmp/cereal_txs.csv'):
-                            df.to_csv('/tmp/cereal_txs.csv')
+                        if not os.path.exists('/tmp/cereal_monitor_txs.csv'):
+                            df.to_csv('/tmp/cereal_monitor_txs.csv')
                         else:
-                            df.to_csv('/tmp/cereal_txs.csv', mode='a', header=False)
-            if os.path.exists('/tmp/cereal_txs.csv') and self.bot:
-                with open('/tmp/cereal_txs.csv', 'rb') as cereal_txs:
-                    self.bot.send_document(self.bot_chatID, cereal_txs)
-                os.remove('/tmp/cereal_txs.csv')
+                            df.to_csv('/tmp/cereal_monitor_txs.csv', mode='a', header=False)
+            if os.path.exists('/tmp/cereal_monitor_txs.csv') and self.bot:
+                with open('/tmp/cereal_monitor_txs.csv', 'rb') as cereal_monitor_txs:
+                    self.bot.send_document(self.bot_chat_id, cereal_monitor_txs)
+                os.remove('/tmp/cereal_monitor_txs.csv')
 
     def _get_txs(self, address):
         url_tx = os.path.join('transactions', 'address', address, 'limit', '4500')
         txs = self.wrapper.request(url_tx)[0]
         cnt_time = int(time.time() * 1000000000) // 6000000000 * 6000000000
         check_time = 5 * 60 * 1000000000
-        # txs = [x for x in txs if x['timestamp'] > cnt_time-check_time]
-        txs = txs[:2]
+        txs = [x for x in txs if x['timestamp'] > cnt_time-check_time]
+        # txs = txs[:2]
         return txs

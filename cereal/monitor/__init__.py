@@ -23,3 +23,18 @@ THE SOFTWARE.
 __doc__ = """
 :mod:`cereal.monitor` provides monitoring ability for Cereal.
 """
+
+
+class MonitorBase(object):
+    """Base Class for monitor used as monitoring agent."""
+
+    def __init__(self, url, bot_chat_id, bot_token):
+        self.url = url
+        self.bot_chat_id = bot_chat_id
+        self.bot_token = bot_token
+
+    def __repr__(self):
+        return repr(self.bot_token)
+
+    def __str__(self):
+        return str(self.bot_token)

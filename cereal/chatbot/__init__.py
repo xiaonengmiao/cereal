@@ -23,3 +23,17 @@ THE SOFTWARE.
 __doc__ = """
 :mod:`cereal.chatbot` provides a chat bot for Cereal.
 """
+
+
+class ChatBotBase(object):
+    """Base Class for chat bot used as service agent."""
+
+    def __init__(self, url, bot_token):
+        self.url = url
+        self.bot_token = bot_token
+
+    def __repr__(self):
+        return repr(self.bot_token)
+
+    def __str__(self):
+        return str(self.bot_token)

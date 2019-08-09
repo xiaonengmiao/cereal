@@ -26,4 +26,4 @@ CEREAL is a recursive acronym for Crypto Explorer Even Analysis and Learn.
 """
 
 from .monitor.monitor import Monitor
-from .chatbot.chatbot import chatbot
+from .chatbot.chatbot import ChatBot

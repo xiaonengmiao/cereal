@@ -42,7 +42,7 @@ import subprocess
 from docopt import docopt
 from cereal import version
 from cereal import Monitor
-from cereal import chatbot
+from cereal import ChatBot
 from apscheduler.schedulers.blocking import BlockingScheduler
 
 LOGGER = logging.getLogger("cereal")
@@ -118,7 +118,10 @@ if __name__ == "__main__":
     # handle VSYS address monitoring
     if ARGUMENTS['<command>'] == 'monitor':
         url = config.get("url", "http://localhost:9922")
-        monitor = Monitor(url, config, ARGUMENTS['--telegram'])
+        bot_chat_id = config.get("telegram", []).get("bot_chatID", [])
+        bot_token = config.get("telegram", []).get("bot_token", [])
+        address = config.get("address", [])
+        monitor = Monitor(url, bot_chat_id, bot_token, address, ARGUMENTS['--telegram'])
         job_defaults = {'coalesce': False, 'max_instances': 5}
         scheduler = BlockingScheduler(timezone="UTC", job_defaults=job_defaults)
         if ARGUMENTS['<args>']:
@@ -145,11 +148,13 @@ if __name__ == "__main__":
 
     # handle VSYS chat bot
     if ARGUMENTS['<command>'] == 'chatbot':
+        url = config.get("url", "http://localhost:9922")
         bot_token = config.get("telegram", []).get("bot_token", [])
         LOGGER.info('Starting chat bot...')
+        chat_bot = ChatBot(url, bot_token)
         LOGGER.info('Feel free to ask me on telegram now!')
         try:
-            chatbot(bot_token)
+            chat_bot.run()
         except KeyboardInterrupt as ex:
             LOGGER.info('Quit chat bot...')
             exit(0)
