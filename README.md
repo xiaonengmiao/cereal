@@ -1,7 +1,7 @@
 [![license: GPL v3](https://img.shields.io/badge/license-GPLv3-blue.svg)](/LICENSE)
 [![python](https://img.shields.io/badge/python-3.7-green.svg)]()
 [![version](https://img.shields.io/badge/version-2019.7-ff69b4.svg)](/cereal/cereal/version.py)
-[![build status](https://travis-ci.com/Icermli/cereal.svg?branch=master)](https://travis-ci.com/Icermli/cereal)
+[![build status](https://travis-ci.com/Icermli/cereal.svg?token=pojzrPMupy6Wy7FYdwHH&branch=master)](https://travis-ci.com/Icermli/cereal)
 [![downloads](https://img.shields.io/github/downloads/Icermli/cereal/total.svg)]()
 [![issues](https://img.shields.io/github/issues/Icermli/cereal.svg)](https://github.com/Icermli/cereal/issues)
 
