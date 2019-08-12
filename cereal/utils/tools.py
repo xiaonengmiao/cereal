@@ -54,6 +54,12 @@ def make_visualizer(data, vis_type=None):
                'generator': data['generator'], 'signature': data['signature'],
                'recipient': data['transactions'][-1]['recipient']}
         vis = dic
+    elif vis_type is 'allslotsinfo':
+        df = pd.DataFrame()
+        df['slotId'] = [x['slotId'] for x in data[1:] if x['address'] != 'None']
+        df['address'] = [x['address'] for x in data[1:] if x['address'] != 'None']
+        df['mintingAverageBalance'] = [x['mintingAverageBalance']/100000000 for x in data[1:] if x['address'] != 'None']
+        vis = df
     else:
         raise ValueError("Invalid vis_type %s" % str(vis_type))
     return vis

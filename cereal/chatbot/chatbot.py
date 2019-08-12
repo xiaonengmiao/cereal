@@ -91,10 +91,10 @@ class ChatBot(ChatBotBase):
                         update.message.reply_text('{} is not valid address'.format(message[1:]))
                     if isinstance(reply, pd.DataFrame) and not reply.empty:
                         self.logger.info(reply)
-                        reply.to_csv('/tmp/cereal_chat_bot_txs.csv')
-                        with open('/tmp/cereal_chat_bot_txs.csv', 'rb') as cereal_chat_bot_txs:
+                        reply.to_csv('/tmp/cereal_chat_bot.csv')
+                        with open('/tmp/cereal_chat_bot.csv', 'rb') as cereal_chat_bot_txs:
                             update.message.reply_document(cereal_chat_bot_txs)
-                        os.remove('/tmp/cereal_chat_bot_txs.csv')
+                        os.remove('/tmp/cereal_chat_bot.csv')
                     elif isinstance(reply, str) and reply:
                         self.logger.info(reply)
                         update.message.reply_text(reply)
@@ -119,6 +119,10 @@ class ChatBot(ChatBotBase):
                 url = os.path.join('blocks', 'last')
                 response = self.wrapper.request(url)
                 return json.dumps(make_visualizer(response, 'block'))
+            elif msg == 'allslotsinfo':
+                url = os.path.join('consensus', 'allSlotsInfo')
+                response = self.wrapper.request(url)
+                return make_visualizer(response, 'allslotsinfo')
             else:
                 return
         else:
