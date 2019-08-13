@@ -56,7 +56,8 @@ class Monitor(MonitorBase):
     def _init_bot(self):
         # Telegram Bot Authorization Token
         self.bot = telegram.Bot(token=self.bot_token)
-        self.bot.send_message(self.bot_chat_id, 'Hi, this is cereal, chat bot inited!')
+        self.bot.send_message(self.bot_chat_id, 'Hi, this is *cereal*, chat bot inited!',
+                              parse_mode=telegram.ParseMode.MARKDOWN)
 
     def address_monitor(self, address=None):
         if address:
@@ -102,7 +103,7 @@ class Monitor(MonitorBase):
             self.bot.send_message(self.bot_chat_id, json.dumps(dic))
             if "not working" in dic.values() or not all(float(value) < 60 for value in dic.values()):
                 self.logger.info("Alert! Some machine is not working!")
-                self.bot.send_message(self.bot_chat_id, text="*Alert*! Some machine is not working!",
+                self.bot.send_message(self.bot_chat_id, text="*Alert*! Some machine is *not working*!",
                                       parse_mode=telegram.ParseMode.MARKDOWN)
 
     @staticmethod
