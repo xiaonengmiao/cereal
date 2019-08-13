@@ -26,7 +26,9 @@ __doc__ = """
 
 import os
 import time
+import json
 import logging
+import requests
 import telegram
 
 from . import MonitorBase
@@ -37,9 +39,10 @@ from ..utils.tools import make_visualizer
 class Monitor(MonitorBase):
     """Class for monitoring."""
 
-    def __init__(self, url, bot_chat_id, bot_token, address, bot=False, chain_id='M'):
+    def __init__(self, url, bot_chat_id, bot_token, address, ip, bot=False, chain_id='M'):
         super().__init__(url, bot_chat_id, bot_token)
         self.address = address
+        self.ip = ip
         self.chain_id = chain_id
         self.wrapper = Wrapper(self.url)
 
@@ -55,38 +58,53 @@ class Monitor(MonitorBase):
         self.bot = telegram.Bot(token=self.bot_token)
         self.bot.send_message(self.bot_chat_id, 'Hi, this is cereal, chat bot inited!')
 
-    def trigger(self, address=None):
+    def address_monitor(self, address=None):
         if address:
-            txs = self._get_txs(address)
-            if txs:
-                df = make_visualizer(txs)
-                self.logger.info(df)
-                if self.bot:
-                    df.to_csv('/tmp/cereal_monitor_txs.csv')
-                    with open('/tmp/cereal_monitor_txs.csv', 'rb') as cereal_monitor_txs:
-                        self.bot.send_document(self.bot_chat_id, cereal_monitor_txs)
-                    os.remove('/tmp/cereal_monitor_txs.csv')
+            for s in address:
+                self._get_txs(s)
         else:
-            for s in self.address:
-                txs = self._get_txs(s)
-                if txs:
-                    df = make_visualizer(txs)
-                    self.logger.info(df)
-                    if self.bot:
-                        if not os.path.exists('/tmp/cereal_monitor_txs.csv'):
-                            df.to_csv('/tmp/cereal_monitor_txs.csv')
-                        else:
-                            df.to_csv('/tmp/cereal_monitor_txs.csv', mode='a', header=False)
-            if os.path.exists('/tmp/cereal_monitor_txs.csv') and self.bot:
-                with open('/tmp/cereal_monitor_txs.csv', 'rb') as cereal_monitor_txs:
-                    self.bot.send_document(self.bot_chat_id, cereal_monitor_txs)
-                os.remove('/tmp/cereal_monitor_txs.csv')
+            self.address_monitor(self.address)
+        if os.path.exists('/tmp/cereal_monitor_txs.csv') and self.bot:
+            with open('/tmp/cereal_monitor_txs.csv', 'rb') as cereal_monitor_txs:
+                self.bot.send_document(self.bot_chat_id, cereal_monitor_txs)
+            os.remove('/tmp/cereal_monitor_txs.csv')
 
     def _get_txs(self, address):
-        url_tx = os.path.join('transactions', 'address', address, 'limit', '4500')
-        txs = self.wrapper.request(url_tx)[0]
+        url = os.path.join('transactions', 'address', address, 'limit', '4500')
+        txs = self.wrapper.request(url)[0]
         cnt_time = int(time.time() * 1000000000) // 6000000000 * 6000000000
         check_time = 5 * 60 * 1000000000
-        txs = [x for x in txs if x['timestamp'] > cnt_time-check_time]
-        # txs = txs[:2]
+        # txs = [x for x in txs if x['timestamp'] > cnt_time-check_time]
+        txs = txs[:2]
+        if txs:
+            df = make_visualizer(txs)
+            self.logger.info(df)
+            if self.bot:
+                if not os.path.exists('/tmp/cereal_monitor_txs.csv'):
+                    df.to_csv('/tmp/cereal_monitor_txs.csv')
+                else:
+                    df.to_csv('/tmp/cereal_monitor_txs.csv', mode='a', header=False)
         return txs
+
+    def ip_monitor(self, ip=None):
+        dic = {}
+        if ip:
+            for i in ip:
+                try:
+                    dic[i] = self._get_block_time(i)
+                except TimeoutError:
+                    dic[i] = 100
+        else:
+            self.ip_monitor(self.ip)
+        if dic and self.bot:
+            self.logger.info(dic)
+            self.bot.send_message(self.bot_chat_id, json.dumps(dic))
+            if not all(float(value) < 60 for value in dic.values()):
+                self.logger.info("Alert! Some machine is not working!")
+                self.bot.send_message(self.bot_chat_id, "Alert! Some machine is not working!")
+
+    @staticmethod
+    def _get_block_time(ip):
+        url = os.path.join(ip, 'blocks', 'last')
+        response = requests.get(url, timeout=10).json()
+        return '{:.2f}'.format(time.time() - response['timestamp'] / 1000000000)

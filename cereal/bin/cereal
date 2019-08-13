@@ -121,24 +121,55 @@ if __name__ == "__main__":
         bot_chat_id = config.get("telegram", []).get("bot_chatID", [])
         bot_token = config.get("telegram", []).get("bot_token", [])
         address = config.get("address", [])
-        monitor = Monitor(url, bot_chat_id, bot_token, address, ARGUMENTS['--telegram'])
+        ip = config.get("ip", [])
+        monitor = Monitor(url, bot_chat_id, bot_token, address, ip, ARGUMENTS['--telegram'])
         job_defaults = {'coalesce': False, 'max_instances': 5}
         scheduler = BlockingScheduler(timezone="UTC", job_defaults=job_defaults)
         if ARGUMENTS['<args>']:
             try:
-                monitor.trigger('{}'.format(ARGUMENTS['<args>'][0]))
+                monitor.address_monitor(ARGUMENTS['<args>'])
             except KeyError as e:
                 LOGGER.info('Monitor address illegal: ' + str(e))
                 exit(0)
-            scheduler.add_job(lambda: monitor.trigger('{}'.format(ARGUMENTS['<args>'][0])), trigger='interval',
-                              minutes=5)
+            scheduler.add_job(lambda: monitor.address_monitor(ARGUMENTS['<args>']), trigger='interval', minutes=5)
         else:
             try:
-                monitor.trigger()
+                monitor.address_monitor()
             except KeyError as e:
                 LOGGER.error('Monitor address illegal: ' + str(e))
                 exit(0)
-            scheduler.add_job(lambda: monitor.trigger(), trigger='interval', minutes=5)
+            scheduler.add_job(lambda: monitor.address_monitor(), trigger='interval', minutes=5)
+        scheduler.print_jobs()
+        try:
+            scheduler.start()
+        except KeyboardInterrupt as ex:
+            LOGGER.info('Got SIGTERM! Terminating...')
+            atexit.register(lambda: scheduler.shutdown())
+
+    # handle VSYS ip monitoring
+    if ARGUMENTS['<command>'] == 'ipmonitor':
+        url = config.get("url", "http://localhost:9922")
+        bot_chat_id = config.get("telegram", []).get("bot_chatID", [])
+        bot_token = config.get("telegram", []).get("bot_token", [])
+        address = config.get("address", [])
+        ip = config.get("ip", [])
+        monitor = Monitor(url, bot_chat_id, bot_token, address, ip, ARGUMENTS['--telegram'])
+        job_defaults = {'coalesce': False, 'max_instances': 5}
+        scheduler = BlockingScheduler(timezone="UTC", job_defaults=job_defaults)
+        if ARGUMENTS['<args>']:
+            try:
+                monitor.ip_monitor(ARGUMENTS['<args>'])
+            except KeyError as e:
+                LOGGER.info('Monitor ip illegal: ' + str(e))
+                exit(0)
+            scheduler.add_job(lambda: monitor.ip_monitor(ARGUMENTS['<args>']), trigger='interval', minutes=5)
+        else:
+            try:
+                monitor.ip_monitor()
+            except KeyError as e:
+                LOGGER.error('Monitor ip illegal: ' + str(e))
+                exit(0)
+            scheduler.add_job(lambda: monitor.ip_monitor(), trigger='interval', minutes=5)
         scheduler.print_jobs()
         try:
             scheduler.start()
