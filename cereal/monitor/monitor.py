@@ -92,19 +92,21 @@ class Monitor(MonitorBase):
             for i in ip:
                 try:
                     dic[i] = self._get_block_time(i)
-                except TimeoutError:
-                    dic[i] = 100
+                except requests.exceptions.RequestException as e:
+                    self.logger.info(str(e))
+                    dic[i] = "not working"
         else:
             self.ip_monitor(self.ip)
         if dic and self.bot:
             self.logger.info(dic)
             self.bot.send_message(self.bot_chat_id, json.dumps(dic))
-            if not all(float(value) < 60 for value in dic.values()):
+            if "not working" in dic.values() or not all(float(value) < 60 for value in dic.values()):
                 self.logger.info("Alert! Some machine is not working!")
-                self.bot.send_message(self.bot_chat_id, "Alert! Some machine is not working!")
+                self.bot.send_message(self.bot_chat_id, text="*Alert*! Some machine is not working!",
+                                      parse_mode=telegram.ParseMode.MARKDOWN)
 
     @staticmethod
     def _get_block_time(ip):
         url = os.path.join(ip, 'blocks', 'last')
-        response = requests.get(url, timeout=10).json()
+        response = requests.get(url, timeout=3).json()
         return '{:.2f}'.format(time.time() - response['timestamp'] / 1000000000)
