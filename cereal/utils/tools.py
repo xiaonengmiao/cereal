@@ -60,6 +60,10 @@ def make_visualizer(data, vis_type=None):
         df['address'] = [x['address'] for x in data[1:] if x['address'] != 'None']
         df['mintingAverageBalance'] = [x['mintingAverageBalance']/100000000 for x in data[1:] if x['address'] != 'None']
         vis = df
+    elif vis_type is 'balance':
+        if 'balance' in data:
+            data['balance'] = data['balance']/100000000
+        vis = data
     else:
         raise ValueError("Invalid vis_type %s" % str(vis_type))
     return vis

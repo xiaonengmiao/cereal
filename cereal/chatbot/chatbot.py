@@ -107,22 +107,26 @@ class ChatBot(ChatBotBase):
 
     def get_response(self, msg):
         if len(msg) > 0:
-            if msg[0] == 'A':
-                url = os.path.join('transactions', 'address', msg, 'limit', '20')
+            if msg.startswith('transaction'):
+                url = os.path.join('transactions', 'address', msg.split(':')[-1].strip(), 'limit', '20')
                 txs = self.wrapper.request(url)[0]
                 return make_visualizer(txs)
-            elif msg == 'height':
+            elif msg.startswith('height'):
                 url = os.path.join('blocks', 'height')
                 response = self.wrapper.request(url)
                 return json.dumps(response)
-            elif msg == 'lastblock':
+            elif msg.startswith('lastblock'):
                 url = os.path.join('blocks', 'last')
                 response = self.wrapper.request(url)
                 return json.dumps(make_visualizer(response, 'block'))
-            elif msg == 'allslotsinfo':
+            elif msg.startswith('allslotsinfo'):
                 url = os.path.join('consensus', 'allSlotsInfo')
                 response = self.wrapper.request(url)
                 return make_visualizer(response, 'allslotsinfo')
+            elif msg.startswith('balance'):
+                url = os.path.join('addresses', 'balance', msg.split(':')[-1].strip())
+                response = self.wrapper.request(url)
+                return json.dumps(make_visualizer(response, 'balance'))
             else:
                 return
         else:
