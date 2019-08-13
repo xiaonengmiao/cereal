@@ -56,7 +56,7 @@ class Monitor(MonitorBase):
     def _init_bot(self):
         # Telegram Bot Authorization Token
         self.bot = telegram.Bot(token=self.bot_token)
-        self.bot.send_message(self.bot_chat_id, 'Hi, this is *cereal*, chat bot inited!',
+        self.bot.send_message(self.bot_chat_id, 'Hi, this is *cereal*, chat bot initialized!',
                               parse_mode=telegram.ParseMode.MARKDOWN)
 
     def address_monitor(self, address=None):
