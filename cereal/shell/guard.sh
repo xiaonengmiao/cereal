@@ -7,7 +7,8 @@ deploy_height_test_wait_time=15
 port="9921 9922 9923"
 server_name="ubuntu"
 server_project_dir="/home/$server_name/ssd/v-systems-main"
-server_log_file="node.log"
+server_log_file=$server_project_dir/"node.log"
+echo $server_log_file
 PLATFORM='unknown'
 UNAMESTR=`uname`
 if [[ "$UNAMESTR" == 'Linux' ]]; then
@@ -147,9 +148,9 @@ while true; do
     echo " > Max height of the blockchain is: $height_max"
     echo "The status of the blockchain is: $node_status"
     kill_old_process_by_port
-    target_file=$(echo ${server_project_dir}/*.jar)
-    config_file=$(echo ${server_project_dir}/*.conf)
-    server_log_file="node.log"
+    target_file=${server_project_dir}/*.jar
+    config_file=${server_project_dir}/*.conf
+    server_log_file=${server_project_dir}/"node.log"
     nohup java -jar ${target_file} ${config_file} > ./${server_log_file} &
     echo " > Deploy command has been run!"
     echo "========================================================================================="
