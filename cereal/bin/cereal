@@ -116,6 +116,16 @@ if __name__ == "__main__":
             LOGGER.info('Quiting deploy process....')
             exit(0)
 
+    # handle VSYS node auto start service
+    if ARGUMENTS['<command>'] == 'guard':
+        deploy_path = os.path.join(os.path.abspath(os.path.dirname(__file__)), '..', 'shell', 'guard.sh')
+        os.popen('chmod +x {}'.format(deploy_path))
+        try:
+            subprocess.call(['{}'.format(deploy_path)])
+        except KeyboardInterrupt:
+            LOGGER.info('Quiting guard process....')
+            exit(0)
+
     # handle VSYS address monitoring
     if ARGUMENTS['<command>'] == 'monitor':
         url = config.get("url", "http://localhost:9922")
