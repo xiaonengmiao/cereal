@@ -16,7 +16,7 @@ server_disk_dir="/home/$server_name/ssd"
 server_disk_device="/dev"
 server_project_dir="/home/$server_name/ssd/v-systems-main"
 server_log_file="node.log"
-project_dir="."
+project_dir="$(pwd)"
 
 communication_port="9921 9922 9923 9928 9929"
 rest_api_port="9922"
@@ -376,7 +376,7 @@ done
 
 if [[ $file_update == "yes" ]]; then
   while true; do
-    box_out "./"
+    box_out "$(pwd)"
     read -p "Is this your dir which contents jar and conf file? " yn
     case $yn in
       [Yy]* ) dir_status="yes"; break;;
