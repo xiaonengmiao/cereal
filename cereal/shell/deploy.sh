@@ -16,12 +16,104 @@ server_disk_dir="/home/$server_name/ssd"
 server_disk_device="/dev"
 server_project_dir="/home/$server_name/ssd/v-systems-main"
 server_log_file="node.log"
+project_dir="."
 
 communication_port="9921 9922 9923 9928 9929"
 rest_api_port="9922"
 deploy_height_test_wait_time=15
 deploy_height_test_number=3
 deploy_wait_check_time=15
+
+function show_help() {
+  echo "-v Show detailed logs"
+  echo "-q Supress all warnings, also unset -v"
+  echo "-d <DPI> Set the DPI value in .Xresources (default to be 100)."
+  echo "         A rule of thumb is to set this value such that 11pt font looks nice."
+  echo "-f <file> Set log file"
+  echo "-c <path> Set conforg path"
+  echo "-g <file> Set global gitignore file"
+  echo "-a <file> Set which alarm sound to use under contrib/sounds"
+  echo "-p Plain install (do not set up credentials with pass)"
+  echo "-m Minimal install (for servers, without additional bells and whistles)"
+}
+
+while getopts "h?vd:a:f:qc:g:pm" opt; do
+  case "$opt" in
+    h|\?)
+      show_help
+      exit 0
+      ;;
+    v)
+      VERBOSE=1;;
+    a)
+      ALARM_SOUND=$OPTARG;;
+    d)
+      DPI=$OPTARG;;
+    f)
+      LOGFILE=$OPTARG;;
+    q)
+      QUIET=0;;
+    c)
+      DEFAULT_CONFORG_DIR=$OPTARG;;
+    g)
+      GITIGNORE_OUT=$OPTARG;;
+    p)
+      PASSWORD_STORE=false;;
+    m)
+      MINIMAL_INSTALL=true;;
+    : )
+      echo "Option -"$OPTARG" requires an argument." >&2
+      exit 1;;
+  esac
+done
+
+function box_out() {
+  if [[ $VERBOSE == 0 ]]; then
+    return
+  fi
+  local s="$*"
+  tput setaf 3
+  echo " -${s//?/-}-
+| ${s//?/ } |
+| $(tput setaf 4)$s$(tput setaf 3) |
+| ${s//?/ } |
+ -${s//?/-}-"
+  tput sgr 0
+}
+
+function box_warn()
+{
+  if [[ $QUIET == 0 ]]; then
+    return
+  fi
+  local s=("$@") b w
+  for l in "${s[@]}"; do
+    ((w<${#l})) && { b="$l"; w="${#l}"; }
+  done
+  tput setaf 5
+  echo "  **${b//?/*}**"
+  for l in "${s[@]}"; do
+    printf '  * %s%*s%s *\n' "$(tput setaf 6)" "-$w" "$l" "$(tput setaf 5)"
+  done
+  echo "  **${b//?/*}**"
+  tput sgr 0
+}
+
+box_out "Detecting your OS.."
+
+PLATFORM='unknown'
+UNAMESTR=`uname`
+if [[ "$UNAMESTR" == 'Linux' ]]; then
+   PLATFORM='linux'
+elif [[ "$UNAMESTR" == 'Darwin' ]]; then
+   PLATFORM='mac'
+elif [[ "$UNAMESTR" == 'FreeBSD' ]]; then
+   PLATFORM='freebsd'
+fi
+
+if [[ $VERBOSE != 0 ]]; then
+  echo "+ Running on $PLATFORM"
+fi
 
 function mount_server {
   local key=$1
@@ -283,8 +375,27 @@ while true; do
 done
 
 if [[ $file_update == "yes" ]]; then
-  read -p "Please input jar file path: " jar_file_path
-  read -p "Please input config file path: " conf_file_path
+  while true; do
+    box_out "./"
+    read -p "Is this your dir which contents jar and conf file? " yn
+    case $yn in
+      [Yy]* ) dir_status="yes"; break;;
+      [Nn]* ) dir_status="no"; break;;
+      * ) echo "Please answer [y]es or [n]o.";;
+    esac
+  done
+
+  if [[ ${dir_status} == "no" ]]; then
+    read -p "Please input your dir: " project_dir
+  fi
+
+  box_out "your server project dir which contents jar and conf file is $project_dir"
+
+  fetch_local_file $project_dir/*.jar "jar"
+  fetch_local_file $project_dir/*.conf "conf"
+
+  jar_file_path=$project_dir/*.jar
+  conf_file_path=$project_dir/*.conf
 fi
 
 # Read 
