@@ -3,6 +3,10 @@
 deploy_type="mainnet"
 deploy_file_update="yes" # yes: bash will send files from local to server
 deploy_status="run" # stop or run
+deploy_height_test_wait_time=15
+deploy_height_test_number=3
+deploy_wait_check_time=15
+
 node_address=""
 node_pem="*.pem"
 artifact_file_path=""
@@ -16,13 +20,14 @@ server_disk_dir="/home/$server_name/ssd"
 server_disk_device="/dev"
 server_project_dir="/home/$server_name/ssd/v-systems-main"
 server_log_file="node.log"
+
 project_dir="$(pwd)"
+
+ssh_key_dir=$HOME/.ssh
 
 communication_port="9921 9922 9923 9928 9929"
 rest_api_port="9922"
-deploy_height_test_wait_time=15
-deploy_height_test_number=3
-deploy_wait_check_time=15
+
 
 function show_help() {
   echo "-v Show detailed logs"
@@ -389,7 +394,7 @@ if [[ $file_update == "yes" ]]; then
     read -p "Please input your dir: " project_dir
   fi
 
-  box_out "your server project dir which contents jar and conf file is $project_dir"
+  box_out "your project dir which contents jar and conf file is $project_dir"
 
   fetch_local_file $project_dir/*.jar "jar"
   fetch_local_file $project_dir/*.conf "conf"
@@ -402,8 +407,24 @@ fi
 read -p "Please input ip address: " node_address
 
 # Read
-read -p "Please input ssh key path: " node_pem_path
+while true; do
+  box_out "$ssh_key_dir"
+  read -p "Is this your dir which contents ssh key? " yn
+  case $yn in
+    [Yy]* ) key_dir_status="yes"; break;;
+    [Nn]* ) key_dir_status="no"; break;;
+    * ) echo "Please answer [y]es or [n]o.";;
+  esac
+done
 
+if [[ "$key_dir_status" ==  "yes" ]]; then
+  read -p "Please input ssh key name: " node_pem_name
+  node_pem_path=$ssh_key_dir/$node_pem_name
+else
+  read -p "Please input ssh key path: " node_pem_path
+fi
+
+box_out "your ssh key is $node_pem_path"
 
 fetch_local_file "$node_pem_path" "pem"
 chmod 400 "$node_pem_path"
@@ -414,8 +435,8 @@ mount_server "$node_pem_path" "$server_name@$node_address" \
 if [[ "$file_update" == "yes" ]]; then
   echo "The path of the jar file is" $jar_file_path
   echo "The path of the config file is" $conf_file_path
-  fetch_local_file "$jar_file_path" "target"
-  fetch_local_file "$conf_file_path" "config"
+  fetch_local_file $jar_file_path "target"
+  fetch_local_file $conf_file_path "config"
   while true; do
   	read -p "Do you wish to clean data? " yn
   	case $yn in
