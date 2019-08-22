@@ -140,7 +140,7 @@ function mount_server {
     sudo mkfs.ext4 \$disk_device
     sudo mount \$disk_device $disk_dir
     sudo chown $server_name:$server_name $disk_dir
-    disk_device_uuid=\"UUID=\$(blkid | grep \$device_name | awk '{print \$2}' | sed 's/UUID=\"//' | sed 's/\"//')\"
+    disk_device_uuid=\"UUID=\$(sudo blkid | grep \$device_name | awk '{print \$2}' | sed 's/UUID=\"//' | sed 's/\"//')\"
     entry=\"\$disk_device_uuid\t$disk_dir\text4\tdefaults,nofail\t0 2\"
     echo -e \$entry | sudo tee -a /etc/fstab
   fi
