@@ -130,6 +130,8 @@ function mount_server {
   ssh -i "$key" "$server" "
   #!/bin/bash
   mkdir -p $disk_dir
+  device_name=\$(lsblk --sort SIZE | tail -1 | awk '{print \$1}')
+  disk_device=\"$disk_dev/\$device_name\"
 
   if mountpoint -q \"$disk_dir\"; then
     echo \"Disk has already mounted\"
@@ -138,9 +140,8 @@ function mount_server {
     sudo mkfs.ext4 \$disk_device
     sudo mount \$disk_device $disk_dir
     sudo chown $server_name:$server_name $disk_dir
-    device_name=\$(lsblk --sort SIZE | tail -1 | awk '{print \$1}')
-    disk_device=\"UUID=\$(blkid | grep \$device_name | awk '{print \$2}' | sed 's/UUID=\"//' | sed 's/\"//')\"
-    entry=\"\$disk_device\t$disk_dir\text4\tdefaults,nofail\t0 2\"
+    disk_device_uuid=\"UUID=\$(blkid | grep \$device_name | awk '{print \$2}' | sed 's/UUID=\"//' | sed 's/\"//')\"
+    entry=\"\$disk_device_uuid\t$disk_dir\text4\tdefaults,nofail\t0 2\"
     echo -e \$entry | sudo tee -a /etc/fstab
   fi
   "
