@@ -518,3 +518,83 @@ else
   echo "========================================================================================="
 fi
 
+function deploy_vsys_guard() {
+  local key=$1
+  local server=$2
+  local dir=$3
+
+  echo "To de"
+  ssh -i "$key" "$server" "
+  #!/bin/bash
+  cd $server_project_dir
+  while true; do
+    echo \"To test the HEIGHT of blockchain in $node_address\"
+    rest_api_address=\"$node_address:$rest_api_port\"
+    echo \" > Rest API is through\" $rest_api_address
+
+    height_max=0
+    change_time=0
+    height=0
+    for (( i=1; i<=$deploy_height_test_number; i++))
+    do
+
+      result=\$(curl -X GET --header 'Accept: application/json' -s "$rest_api_address/blocks/height")
+      height=$(json_extract "height" "$result")
+
+      if [[ -n "\$height" ]]; then
+        echo \" > The height for the blockchain in the \$i-th check is: \$height\"
+        read height_max change_time < <(height_comparison "\$height_max" "\$height" "\$change_time")
+      else
+        echo \" > The height for the blockchain in the \"\$i\"-th check is: empty\"
+      fi
+
+      sleep ${deploy_height_test_wait_time}
+
+    done
+
+    if [[ \${change_time} -gt 1 ]]; then
+      node_status="Normal"
+    else
+      node_status="Abnormal"
+    fi
+
+    if [[ \"\$node_status\" == \"Normal\" ]]; then
+      echo \" > Max height of the blockchain is: \$height_max\"
+      echo \"The status of the blockchain is: \$node_status \$(( change_time - 1 )) times with height change out of $deploy_height_test_number checks\"
+      echo \"=========================================================================================\"
+    else
+      echo \" > Max height of the blockchain is: \$height_max\"
+      echo \"The status of the blockchain is: \$node_status\"
+      kill_old_process_by_port
+      target_file=${server_project_dir}/*.jar
+      config_file=${server_project_dir}/*.conf
+      server_log_file=${server_project_dir}/"node.log"
+      nohup java -jar \${target_file} \${config_file} > ./\${server_log_file} &
+      echo \" > Deploy command has been run!\"
+      echo \"=========================================================================================\"
+    fi
+    echo \"Sleep for 5 minutes...\"
+    count=0
+    total=600
+    pstr=\"[=======================================================================]\"
+
+    while [[ \$count -lt \$total ]]; do
+      sleep 0.5 # this is work
+      count=\$(( \$count + 1 ))
+      pd=\$(( \$count * 73 / \$total ))
+      printf \"\r%3d.%1d%% %.\${pd}s\" \$(( \$count * 100 / \$total )) \$(( (\$count * 1000 / \$total) % 10 )) \$pstr
+    done
+    printf \"\n\"
+  done
+  "
+}
+
+## Read
+#while true; do
+#  read -p "Do you wish to deploy vsys guard to remote server? " yn
+#  case $yn in
+#    [Yy]* ) guard_status="yes"; break;;
+#    [Nn]* ) guard_status="no"; break;;
+#    * ) echo "Please answer [y]es or [n]o.";;
+#  esac
+#done

@@ -2,8 +2,8 @@
 
 node_address="http://localhost"
 rest_api_port="9922"
-deploy_height_test_number=3
-deploy_height_test_wait_time=5
+deploy_height_test_number=4
+deploy_height_test_wait_time=15
 port="9921 9922 9923"
 server_name="ubuntu"
 server_project_dir="/home/$server_name/ssd/v-systems-main"
