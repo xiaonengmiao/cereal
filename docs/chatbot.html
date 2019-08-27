@@ -1,0 +1,174 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8" />
+    <title>ChatBot Oriented Design &#8212; Cereal 0.0.1 documentation</title>
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/language_data.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Utils Oriented Design" href="utils.html" />
+    <link rel="prev" title="Monitor Oriented Design" href="monitor.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="chatbot-oriented-design">
+<h1>ChatBot Oriented Design<a class="headerlink" href="#chatbot-oriented-design" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="module-cereal.chatbot">
+<span id="basic-constructs"></span><h2>Basic Constructs<a class="headerlink" href="#module-cereal.chatbot" title="Permalink to this headline">¶</a></h2>
+<p><a class="reference internal" href="#module-cereal.chatbot" title="cereal.chatbot"><code class="xref py py-mod docutils literal notranslate"><span class="pre">cereal.chatbot</span></code></a> provides a chat bot for Cereal.</p>
+<dl class="class">
+<dt id="cereal.chatbot.ChatBotBase">
+<em class="property">class </em><code class="sig-prename descclassname">cereal.chatbot.</code><code class="sig-name descname">ChatBotBase</code><span class="sig-paren">(</span><em class="sig-param">url='http://localhost:9922'</em>, <em class="sig-param">bot_token='Talk to https://telegram.me/botfather to get one!'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cereal/chatbot.html#ChatBotBase"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cereal.chatbot.ChatBotBase" title="Permalink to this definition">¶</a></dt>
+<dd><p>Base Class for chat bot used as service agent.</p>
+<p>It can be used to create a chatbot for refering vsys info,
+using Telegram chatbot as base.</p>
+<dl class="attribute">
+<dt id="cereal.chatbot.ChatBotBase.bot_token">
+<code class="sig-name descname">bot_token</code><a class="headerlink" href="#cereal.chatbot.ChatBotBase.bot_token" title="Permalink to this definition">¶</a></dt>
+<dd><p>Telegram chatbot token.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="cereal.chatbot.ChatBotBase.url">
+<code class="sig-name descname">url</code><a class="headerlink" href="#cereal.chatbot.ChatBotBase.url" title="Permalink to this definition">¶</a></dt>
+<dd><p>VSYS full node url with which to get info.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-cereal.chatbot.chatbot">
+<span id="chatbot-manipulations"></span><h2>ChatBot Manipulations<a class="headerlink" href="#module-cereal.chatbot.chatbot" title="Permalink to this headline">¶</a></h2>
+<p><a class="reference internal" href="#module-cereal.chatbot.chatbot" title="cereal.chatbot.chatbot"><code class="xref py py-mod docutils literal notranslate"><span class="pre">cereal.chatbot.chatbot</span></code></a> provides a chat bot for Cereal.</p>
+<dl class="class">
+<dt id="cereal.chatbot.chatbot.ChatBot">
+<em class="property">class </em><code class="sig-prename descclassname">cereal.chatbot.chatbot.</code><code class="sig-name descname">ChatBot</code><span class="sig-paren">(</span><em class="sig-param">url</em>, <em class="sig-param">bot_token</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cereal/chatbot/chatbot.html#ChatBot"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cereal.chatbot.chatbot.ChatBot" title="Permalink to this definition">¶</a></dt>
+<dd><p>Class for ChatBot.</p>
+<p>It can be used to create a chatbot for refering vsys info,
+using Telegram chatbot as base.</p>
+<dl class="attribute">
+<dt id="cereal.chatbot.chatbot.ChatBot.bot">
+<code class="sig-name descname">bot</code><a class="headerlink" href="#cereal.chatbot.chatbot.ChatBot.bot" title="Permalink to this definition">¶</a></dt>
+<dd><p>Telegram chatbot.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="cereal.chatbot.chatbot.ChatBot.url">
+<code class="sig-name descname">url</code><a class="headerlink" href="#cereal.chatbot.chatbot.ChatBot.url" title="Permalink to this definition">¶</a></dt>
+<dd><p>VSYS full node url with which to get info.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="cereal.chatbot.chatbot.ChatBot.echo">
+<code class="sig-name descname">echo</code><span class="sig-paren">(</span><em class="sig-param">bot</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cereal/chatbot/chatbot.html#ChatBot.echo"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cereal.chatbot.chatbot.ChatBot.echo" title="Permalink to this definition">¶</a></dt>
+<dd><p>Echo the message the user sent.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="cereal.chatbot.chatbot.ChatBot.run">
+<code class="sig-name descname">run</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/cereal/chatbot/chatbot.html#ChatBot.run"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cereal.chatbot.chatbot.ChatBot.run" title="Permalink to this definition">¶</a></dt>
+<dd><p>Run the bot.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">Cereal</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="monitor.html">Monitor Oriented Design</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">ChatBot Oriented Design</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#module-cereal.chatbot">Basic Constructs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-cereal.chatbot.chatbot">ChatBot Manipulations</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="utils.html">Utils Oriented Design</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="monitor.html" title="previous chapter">Monitor Oriented Design</a></li>
+      <li>Next: <a href="utils.html" title="next chapter">Utils Oriented Design</a></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2019, Techcat_ Haohan Li.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.1.2</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="_sources/chatbot.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

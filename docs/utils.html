@@ -1,0 +1,166 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8" />
+    <title>Utils Oriented Design &#8212; Cereal 0.0.1 documentation</title>
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/language_data.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="ChatBot Oriented Design" href="chatbot.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="utils-oriented-design">
+<h1>Utils Oriented Design<a class="headerlink" href="#utils-oriented-design" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="module-cereal.utils">
+<span id="basic-constructs"></span><h2>Basic Constructs<a class="headerlink" href="#module-cereal.utils" title="Permalink to this headline">¶</a></h2>
+<p><a class="reference internal" href="#module-cereal.utils" title="cereal.utils"><code class="xref py py-mod docutils literal notranslate"><span class="pre">cereal.utils</span></code></a> provides utilities for Cereal.</p>
+</div>
+<div class="section" id="module-cereal.utils.wrapper">
+<span id="wrapper-manipulations"></span><h2>Wrapper Manipulations<a class="headerlink" href="#module-cereal.utils.wrapper" title="Permalink to this headline">¶</a></h2>
+<p><a class="reference internal" href="#module-cereal.utils.wrapper" title="cereal.utils.wrapper"><code class="xref py py-mod docutils literal notranslate"><span class="pre">cereal.utils.wrapper</span></code></a> provides utilities for VSYS chain api.</p>
+<dl class="class">
+<dt id="cereal.utils.wrapper.Wrapper">
+<em class="property">class </em><code class="sig-prename descclassname">cereal.utils.wrapper.</code><code class="sig-name descname">Wrapper</code><span class="sig-paren">(</span><em class="sig-param">node_host</em>, <em class="sig-param">api_key=''</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cereal/utils/wrapper.html#Wrapper"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cereal.utils.wrapper.Wrapper" title="Permalink to this definition">¶</a></dt>
+<dd><p>Class for VSYS chain api wrapper.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-cereal.utils.tools">
+<span id="tools-manipulations"></span><h2>Tools Manipulations<a class="headerlink" href="#module-cereal.utils.tools" title="Permalink to this headline">¶</a></h2>
+<p><a class="reference internal" href="#module-cereal.utils.wrapper" title="cereal.utils.wrapper"><code class="xref py py-mod docutils literal notranslate"><span class="pre">cereal.utils.wrapper</span></code></a> provides useful functions for Cereal.</p>
+<dl class="function">
+<dt id="cereal.utils.tools.make_visualizer">
+<code class="sig-prename descclassname">cereal.utils.tools.</code><code class="sig-name descname">make_visualizer</code><span class="sig-paren">(</span><em class="sig-param">data</em>, <em class="sig-param">vis_type=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cereal/utils/tools.html#make_visualizer"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cereal.utils.tools.make_visualizer" title="Permalink to this definition">¶</a></dt>
+<dd><p>Visualise data in table.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-cereal.utils.errors">
+<span id="errors-manipulations"></span><h2>Errors Manipulations<a class="headerlink" href="#module-cereal.utils.errors" title="Permalink to this headline">¶</a></h2>
+<dl class="exception">
+<dt id="cereal.utils.errors.BelowExpectError">
+<em class="property">exception </em><code class="sig-prename descclassname">cereal.utils.errors.</code><code class="sig-name descname">BelowExpectError</code><a class="reference internal" href="_modules/cereal/utils/errors.html#BelowExpectError"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cereal.utils.errors.BelowExpectError" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="exception">
+<dt id="cereal.utils.errors.CerealException">
+<em class="property">exception </em><code class="sig-prename descclassname">cereal.utils.errors.</code><code class="sig-name descname">CerealException</code><a class="reference internal" href="_modules/cereal/utils/errors.html#CerealException"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cereal.utils.errors.CerealException" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="exception">
+<dt id="cereal.utils.errors.NetworkException">
+<em class="property">exception </em><code class="sig-prename descclassname">cereal.utils.errors.</code><code class="sig-name descname">NetworkException</code><a class="reference internal" href="_modules/cereal/utils/errors.html#NetworkException"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cereal.utils.errors.NetworkException" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="exception">
+<dt id="cereal.utils.errors.NotMintingError">
+<em class="property">exception </em><code class="sig-prename descclassname">cereal.utils.errors.</code><code class="sig-name descname">NotMintingError</code><a class="reference internal" href="_modules/cereal/utils/errors.html#NotMintingError"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cereal.utils.errors.NotMintingError" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="exception">
+<dt id="cereal.utils.errors.NotSyncingError">
+<em class="property">exception </em><code class="sig-prename descclassname">cereal.utils.errors.</code><code class="sig-name descname">NotSyncingError</code><a class="reference internal" href="_modules/cereal/utils/errors.html#NotSyncingError"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cereal.utils.errors.NotSyncingError" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">Cereal</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="monitor.html">Monitor Oriented Design</a></li>
+<li class="toctree-l1"><a class="reference internal" href="chatbot.html">ChatBot Oriented Design</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Utils Oriented Design</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#module-cereal.utils">Basic Constructs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-cereal.utils.wrapper">Wrapper Manipulations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-cereal.utils.tools">Tools Manipulations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-cereal.utils.errors">Errors Manipulations</a></li>
+</ul>
+</li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="chatbot.html" title="previous chapter">ChatBot Oriented Design</a></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2019, Techcat_ Haohan Li.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.1.2</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="_sources/utils.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

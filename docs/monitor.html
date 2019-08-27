@@ -1,0 +1,186 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8" />
+    <title>Monitor Oriented Design &#8212; Cereal 0.0.1 documentation</title>
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/language_data.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="ChatBot Oriented Design" href="chatbot.html" />
+    <link rel="prev" title="Welcome to Cereal’s documentation!" href="index.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="monitor-oriented-design">
+<h1>Monitor Oriented Design<a class="headerlink" href="#monitor-oriented-design" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="module-cereal.monitor">
+<span id="basic-constructs"></span><h2>Basic Constructs<a class="headerlink" href="#module-cereal.monitor" title="Permalink to this headline">¶</a></h2>
+<p><a class="reference internal" href="#module-cereal.monitor" title="cereal.monitor"><code class="xref py py-mod docutils literal notranslate"><span class="pre">cereal.monitor</span></code></a> provides monitoring ability for Cereal.</p>
+<dl class="class">
+<dt id="cereal.monitor.MonitorBase">
+<em class="property">class </em><code class="sig-prename descclassname">cereal.monitor.</code><code class="sig-name descname">MonitorBase</code><span class="sig-paren">(</span><em class="sig-param">url</em>, <em class="sig-param">bot_chat_id</em>, <em class="sig-param">bot_token</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cereal/monitor.html#MonitorBase"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cereal.monitor.MonitorBase" title="Permalink to this definition">¶</a></dt>
+<dd><p>Base Class for monitor used as monitoring agent.</p>
+<p>It can be used to create a monitor for vsys address or ip,
+using pandas to process data.</p>
+<dl class="attribute">
+<dt id="cereal.monitor.MonitorBase.bot_token">
+<code class="sig-name descname">bot_token</code><a class="headerlink" href="#cereal.monitor.MonitorBase.bot_token" title="Permalink to this definition">¶</a></dt>
+<dd><p>Telegram chatbot token.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="cereal.monitor.MonitorBase.url">
+<code class="sig-name descname">url</code><a class="headerlink" href="#cereal.monitor.MonitorBase.url" title="Permalink to this definition">¶</a></dt>
+<dd><p>VSYS full node url with which to get info.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="cereal.monitor.MonitorBase.bot_chat_id">
+<code class="sig-name descname">bot_chat_id</code><a class="headerlink" href="#cereal.monitor.MonitorBase.bot_chat_id" title="Permalink to this definition">¶</a></dt>
+<dd><p>Telegram chatid to send messages to.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-cereal.monitor.monitor">
+<span id="monitor-manipulations"></span><h2>Monitor Manipulations<a class="headerlink" href="#module-cereal.monitor.monitor" title="Permalink to this headline">¶</a></h2>
+<p><a class="reference internal" href="#module-cereal.monitor.monitor" title="cereal.monitor.monitor"><code class="xref py py-mod docutils literal notranslate"><span class="pre">cereal.monitor.monitor</span></code></a> provides monitoring ability for Cereal.</p>
+<dl class="class">
+<dt id="cereal.monitor.monitor.Monitor">
+<em class="property">class </em><code class="sig-prename descclassname">cereal.monitor.monitor.</code><code class="sig-name descname">Monitor</code><span class="sig-paren">(</span><em class="sig-param">url</em>, <em class="sig-param">bot_chat_id</em>, <em class="sig-param">bot_token</em>, <em class="sig-param">address</em>, <em class="sig-param">ip</em>, <em class="sig-param">bot=False</em>, <em class="sig-param">chain_id='M'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cereal/monitor/monitor.html#Monitor"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cereal.monitor.monitor.Monitor" title="Permalink to this definition">¶</a></dt>
+<dd><p>Class for monitoring.</p>
+<p>It can be used to create a monitor for vsys address or ip,
+using pandas to process data.</p>
+<dl class="attribute">
+<dt id="cereal.monitor.monitor.Monitor.bot_token">
+<code class="sig-name descname">bot_token</code><a class="headerlink" href="#cereal.monitor.monitor.Monitor.bot_token" title="Permalink to this definition">¶</a></dt>
+<dd><p>Telegram chatbot token.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="cereal.monitor.monitor.Monitor.url">
+<code class="sig-name descname">url</code><a class="headerlink" href="#cereal.monitor.monitor.Monitor.url" title="Permalink to this definition">¶</a></dt>
+<dd><p>VSYS full node url with which to get info.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="cereal.monitor.monitor.Monitor.bot_chat_id">
+<code class="sig-name descname">bot_chat_id</code><a class="headerlink" href="#cereal.monitor.monitor.Monitor.bot_chat_id" title="Permalink to this definition">¶</a></dt>
+<dd><p>Telegram chatid to send messages to.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="cereal.monitor.monitor.Monitor.address_monitor">
+<code class="sig-name descname">address_monitor</code><span class="sig-paren">(</span><em class="sig-param">address=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cereal/monitor/monitor.html#Monitor.address_monitor"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cereal.monitor.monitor.Monitor.address_monitor" title="Permalink to this definition">¶</a></dt>
+<dd><p>Monitor for addresses on VSYS chain.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="cereal.monitor.monitor.Monitor.ip_monitor">
+<code class="sig-name descname">ip_monitor</code><span class="sig-paren">(</span><em class="sig-param">ip=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cereal/monitor/monitor.html#Monitor.ip_monitor"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cereal.monitor.monitor.Monitor.ip_monitor" title="Permalink to this definition">¶</a></dt>
+<dd><p>Monitor for ips of VSYS nodes.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">Cereal</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Monitor Oriented Design</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#module-cereal.monitor">Basic Constructs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-cereal.monitor.monitor">Monitor Manipulations</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="chatbot.html">ChatBot Oriented Design</a></li>
+<li class="toctree-l1"><a class="reference internal" href="utils.html">Utils Oriented Design</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="index.html" title="previous chapter">Welcome to Cereal’s documentation!</a></li>
+      <li>Next: <a href="chatbot.html" title="next chapter">ChatBot Oriented Design</a></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2019, Techcat_ Haohan Li.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.1.2</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="_sources/monitor.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>
