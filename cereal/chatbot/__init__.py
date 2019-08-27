@@ -26,14 +26,29 @@ __doc__ = """
 
 
 class ChatBotBase(object):
-    """Base Class for chat bot used as service agent."""
+    """Base Class for chat bot used as service agent.
 
-    def __init__(self, url, bot_token):
+    It can be used to create a chatbot for refering vsys info,
+    using Telegram chatbot as base.
+
+    .. attribute:: bot_token
+
+        Telegram chatbot token.
+
+    .. attribute:: url
+
+        VSYS full node url with which to get info.
+    """
+
+    def __init__(self, url="http://localhost:9922", bot_token="Talk to https://telegram.me/botfather to get one!"):
+        """Constructor."""
         self.url = url
         self.bot_token = bot_token
 
     def __repr__(self):
+        """Returns internal representation used for refering."""
         return repr(self.bot_token)
 
     def __str__(self):
+        """Returns readable representation."""
         return str(self.bot_token)

@@ -40,9 +40,22 @@ from telegram.error import NetworkError, Unauthorized
 
 
 class ChatBot(ChatBotBase):
-    """Class for ChatBot."""
+    """Class for ChatBot.
+
+    It can be used to create a chatbot for refering vsys info,
+    using Telegram chatbot as base.
+
+    .. attribute:: bot
+
+        Telegram chatbot.
+
+    .. attribute:: url
+
+        VSYS full node url with which to get info.
+    """
 
     def __init__(self, url, bot_token):
+        """Constructor."""
         super().__init__(url, bot_token)
         self.update_id = None
         self.wrapper = Wrapper(url)
@@ -52,7 +65,7 @@ class ChatBot(ChatBotBase):
         self.logger = logging.getLogger(__name__)
 
     def _init_bot(self):
-        # Telegram Bot Authorization Token
+        """Telegram Bot Authorization Token"""
         self.bot = telegram.Bot(token=self.bot_token)
 
     def run(self):
