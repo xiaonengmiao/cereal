@@ -21,7 +21,13 @@ THE SOFTWARE.
 """
 
 import cereal.chatbot.chatbot as chatbot
+from telegram.error import InvalidToken
+import pytest
 
 def test_chatbotbase():
     type = chatbot.ChatBotBase()
     assert str(type) == "Talk to https://telegram.me/botfather to get one!"
+
+def test_chatbot():
+    with pytest.raises(InvalidToken):
+        chatbot.ChatBot("http://localhost:9922", "")
