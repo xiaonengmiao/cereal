@@ -27,12 +27,13 @@ __doc__ = """
 import os
 import json
 import logging
-import requests
 import telegram
+import requests, re
 import pandas as pd
 
 from time import sleep
 from . import ChatBotBase
+from urllib.parse import quote
 from ..utils.wrapper import Wrapper
 from ..utils.tools import make_visualizer
 from telegram.error import NetworkError, Unauthorized
@@ -102,8 +103,11 @@ class ChatBot(ChatBotBase):
                     # reply = get_response_tuling(message)
                     # self.logger.info(reply)
                     # update.message.reply_text(reply)
-                    default_reply = message
-                    update.message.reply_text(default_reply)
+                    reply = get_response_xiaomi(message)
+                    self.logger.info(reply)
+                    update.message.reply_text(reply, parse_mode=telegram.ParseMode.MARKDOWN)
+                    # default_reply = message
+                    # update.message.reply_text(default_reply)
 
     def get_response(self, msg):
         if len(msg) > 0:
@@ -150,5 +154,22 @@ def get_response_tuling(msg):
     except requests.exceptions.RequestException:
         return
 
-
-
+def get_response_xiaomi(msg):
+    ini = "{'sessionId':'09e2aca4d0a541f88eecc77c03a8b393','robotId':'webbot','userId':'462d49d3742745bb98f7538c42f9f874','body':{'content':'" + msg + "'},'type':'txt'}&ts=1529917589648"
+    url = "http://i.xiaoi.com/robot/webrobot?&callback=__webrobot_processMsg&data=" + quote(ini)
+    cookie = {"cnonce": "808116", "sig": "0c3021aa5552fe597bb55448b40ad2a90d2dead5",
+              "XISESSIONID": "hlbnd1oiwar01dfje825gavcn", "nonce": "273765", "hibext_instdsigdip2": "1"}
+    try:
+        r = requests.get(url, cookies=cookie)
+        pattern = re.compile(r'\"fontColor\":0,\"content\":\"(.*?)\"')
+        r = pattern.findall(r.text)
+        rep = {"\\n": "\n", "\\t": "\t", "\\r": "\r", "\\u003c": "<", "\\u003e": ">"} # define desired replacements here
+        # use these three lines to do the replacement
+        rep = dict((re.escape(k), v) for k, v in rep.items())
+        #Python 3 renamed dict.iteritems to dict.items so use rep.items() for latest versions
+        pattern = re.compile("|".join(rep.keys()))
+        # pattern = re.compile('\\\\n|\\\\t|\\\\r')
+        r = pattern.sub(lambda m: rep[re.escape(m.group(0))], r[1])
+        return r
+    except requests.exceptions.RequestException:
+        return
