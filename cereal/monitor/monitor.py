@@ -21,7 +21,7 @@ THE SOFTWARE.
 """
 
 __doc__ = """
-:mod:`cereal.monitor.monitor` provides monitoring ability for Cereal. 
+:mod:`cereal.monitor.monitor` provides monitoring ability for Cereal.
 """
 
 import os
@@ -37,9 +37,26 @@ from ..utils.tools import make_visualizer
 
 
 class Monitor(MonitorBase):
-    """Class for monitoring."""
+    """Class for monitoring.
+
+    It can be used to create a monitor for vsys address or ip,
+    using pandas to process data.
+
+    .. attribute:: bot_token
+
+        Telegram chatbot token.
+
+    .. attribute:: url
+
+        VSYS full node url with which to get info.
+
+    .. attribute:: bot_chat_id
+
+        Telegram chatid to send messages to.
+    """
 
     def __init__(self, url, bot_chat_id, bot_token, address, ip, bot=False, chain_id='M'):
+        """Constructor."""
         super().__init__(url, bot_chat_id, bot_token)
         self.address = address
         self.ip = ip
@@ -54,12 +71,13 @@ class Monitor(MonitorBase):
         self.logger = logging.getLogger(__name__)
 
     def _init_bot(self):
-        # Telegram Bot Authorization Token
+        """Telegram Bot Authorization Token."""
         self.bot = telegram.Bot(token=self.bot_token)
         self.bot.send_message(self.bot_chat_id, 'Hi, this is *cereal*, chat bot initialized!',
                               parse_mode=telegram.ParseMode.MARKDOWN)
 
     def address_monitor(self, address=None):
+        """Monitor for addresses on VSYS chain."""
         if address:
             for s in address:
                 self._get_txs(s)
@@ -88,6 +106,7 @@ class Monitor(MonitorBase):
         return txs
 
     def ip_monitor(self, ip=None):
+        """Monitor for ips of VSYS nodes."""
         dic = {}
         if ip:
             for i in ip:
