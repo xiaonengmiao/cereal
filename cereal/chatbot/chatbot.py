@@ -65,7 +65,7 @@ class ChatBot(ChatBotBase):
         self.logger = logging.getLogger(__name__)
 
     def _init_bot(self):
-        """Telegram Bot Authorization Token"""
+        """Telegram Bot Authorization Token."""
         self.bot = telegram.Bot(token=self.bot_token)
 
     def run(self):
