@@ -11,6 +11,16 @@ Cereal is a Python library for exploring cryptocurrency markets.
 
 CEREAL is a recursive acronym for Crypto ExploreR Even Analysis and Learn.
 
+# Test
+
+Using `pytest` framework makes it easy to write small tests, yet scales to support complex functional testing for applications and libraries.
+
+To execute it:
+
+```
+pytest
+```
+
 # [Documentation](/README.md)
 
 View the [documentation](/README.md)
