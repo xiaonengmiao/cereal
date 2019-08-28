@@ -174,9 +174,10 @@ def get_response_xiaomi(msg):
               "XISESSIONID": "hlbnd1oiwar01dfje825gavcn", "nonce": "273765", "hibext_instdsigdip2": "1"}
     try:
         r = requests.get(url, cookies=cookie)
-        pattern = re.compile(r'\"fontColor\":0,\"content\":\"(.*?)\"')
+        pattern = re.compile(r'\"fontColor\":0,\"content\":\"(.*?)\",\"emoticons')
         r = pattern.findall(r.text)
-        rep = {"\\n": "\n", "\\t": "\t", "\\r": "\r", "\\u003c": "<", "\\u003e": ">"} # define desired replacements here
+        rep = {"\\n": "\n", "\\t": "\t", "\\r": "\r", "\\u003c": "<", "\\u003e": ">",
+               "\\u003d": "=", "\\": "", "[link url\\u003d": "", "[/link]": "", "]": "", "[": ""} # define desired replacements here
         # use these three lines to do the replacement
         rep = dict((re.escape(k), v) for k, v in rep.items())
         #Python 3 renamed dict.iteritems to dict.items so use rep.items() for latest versions
