@@ -40,7 +40,7 @@ class ChatBotBase(object):
         VSYS full node url with which to get info.
     """
 
-    def __init__(self, url="http://localhost:9922", bot_token="Talk to https://telegram.me/botfather to get one!"):
+    def __init__(self, url=None, bot_token="Talk to https://telegram.me/botfather to get one!"):
         """Constructor."""
         self.url = url
         self.bot_token = bot_token

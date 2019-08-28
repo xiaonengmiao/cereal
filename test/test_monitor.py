@@ -20,40 +20,14 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 """
 
-__doc__ = """
-:mod:`cereal.monitor` provides monitoring ability for Cereal.
-"""
+import cereal.monitor.monitor as monitor
+from telegram.error import InvalidToken
+import pytest
 
+def test_monitorbase():
+    type = monitor.MonitorBase()
+    assert str(type) == "Talk to https://telegram.me/botfather to get one!"
 
-class MonitorBase(object):
-    """Base Class for monitor used as monitoring agent.
-
-    It can be used to create a monitor for vsys address or ip,
-    using pandas to process data.
-
-    .. attribute:: bot_token
-
-        Telegram chatbot token.
-
-    .. attribute:: url
-
-        VSYS full node url with which to get info.
-
-    .. attribute:: bot_chat_id
-
-        Telegram chatid to send messages to.
-    """
-
-    def __init__(self, url=None, bot_chat_id=None, bot_token="Talk to https://telegram.me/botfather to get one!"):
-        """Constructor."""
-        self.url = url
-        self.bot_chat_id = bot_chat_id
-        self.bot_token = bot_token
-
-    def __repr__(self):
-        """Returns internal representation used for refering."""
-        return repr(self.bot_token)
-
-    def __str__(self):
-        """Returns readable representation."""
-        return str(self.bot_token)
+def test_monitor():
+    with pytest.raises(InvalidToken):
+        monitor.Monitor("http://localhost:9922", "", "", [], [], True)
