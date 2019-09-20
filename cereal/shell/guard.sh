@@ -245,7 +245,7 @@ while true; do
     target_file=${server_project_dir}/*.jar
     config_file=${server_project_dir}/*.conf
     server_log_file=${server_project_dir}/"node.log"
-    nohup java -jar ${target_file} ${config_file} > ./${server_log_file} &
+    nohup java -jar ${target_file} ${config_file} > ${server_log_file} &
     echo " > Deploy command has been run!"
     echo "========================================================================================="
   fi
