@@ -95,32 +95,35 @@ class ChatBot(ChatBotBase):
             if update.message:
                 # and update.message.text[:4] == '微软小冰':  # your bot can receive updates without messages
                 # Reply to the message
-                message = update.message.text
-                if update.message.text[0] == '/':
-                    try:
-                        reply = self.get_response(message[1:])
-                    except KeyError:
-                        reply = None
-                        self.logger.info('{} is not valid address'.format(message[1:]))
-                        update.message.reply_text('{} is not valid address'.format(message[1:]))
-                    if isinstance(reply, pd.DataFrame) and not reply.empty:
-                        self.logger.info(reply)
-                        reply.to_csv('/tmp/cereal_chat_bot.csv')
-                        with open('/tmp/cereal_chat_bot.csv', 'rb') as cereal_chat_bot_txs:
-                            update.message.reply_document(cereal_chat_bot_txs)
-                        os.remove('/tmp/cereal_chat_bot.csv')
-                    elif isinstance(reply, str) and reply:
-                        self.logger.info(reply)
-                        update.message.reply_text(reply)
+                if not update.message.text and update.message.sticker:
+                    update.message.reply_sticker(update.message.sticker)
                 else:
-                    # reply = get_response_tuling(message)
-                    # self.logger.info(reply)
-                    # update.message.reply_text(reply)
-                    reply = get_response_xiaomi(message)
-                    self.logger.info(reply)
-                    update.message.reply_text(reply, parse_mode=telegram.ParseMode.MARKDOWN)
-                    # default_reply = message
-                    # update.message.reply_text(default_reply)
+                    message = update.message.text
+                    if update.message.text[0] == '/':
+                        try:
+                            reply = self.get_response(message[1:])
+                        except KeyError:
+                            reply = None
+                            self.logger.info('{} is not valid address'.format(message[1:]))
+                            update.message.reply_text('{} is not valid address'.format(message[1:]))
+                        if isinstance(reply, pd.DataFrame) and not reply.empty:
+                            self.logger.info(reply)
+                            reply.to_csv('/tmp/cereal_chat_bot.csv')
+                            with open('/tmp/cereal_chat_bot.csv', 'rb') as cereal_chat_bot_txs:
+                                update.message.reply_document(cereal_chat_bot_txs)
+                            os.remove('/tmp/cereal_chat_bot.csv')
+                        elif isinstance(reply, str) and reply:
+                            self.logger.info(reply)
+                            update.message.reply_text(reply)
+                    else:
+                        # reply = get_response_tuling(message)
+                        # self.logger.info(reply)
+                        # update.message.reply_text(reply)
+                        reply = get_response_xiaomi(message)
+                        self.logger.info(reply)
+                        update.message.reply_text(reply, parse_mode=telegram.ParseMode.MARKDOWN)
+                        # default_reply = message
+                        # update.message.reply_text(default_reply)
 
     def get_response(self, msg):
         if len(msg) > 0:
