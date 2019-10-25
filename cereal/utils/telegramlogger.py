@@ -1,0 +1,58 @@
+__copyright__ = "Copyright (C) 2019 Techcat_ Haohan Li"
+
+__license__ = """
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in
+all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+THE SOFTWARE.
+"""
+
+__doc__ = """
+:mod:`cereal.utils.telegramlogger` provides utilities for telegram logger.
+"""
+
+import telegram
+from logging import Handler
+
+
+class TelegramHandler(Handler):
+    """Class for Telegram Logger
+
+    .. attribute:: bot
+
+        Telegram bot
+
+    .. attribute:: bot_chat_id
+
+        Telegram bot_chat_id
+
+    .. attribute:: log_level
+
+        log level
+    """
+
+    def __init__(self, bot, bot_chat_id, log_level):
+        """Constructor."""
+        super().__init__()
+        self.bot = bot
+        self.bot_chat_id = bot_chat_id
+        self.log_level = log_level
+
+    def emit(self, record):
+        if not record.levelno == self.log_level:
+            return
+        log_entry = self.format(record)
+        return self.bot.send_message(self.bot_chat_id, log_entry, parse_mode=telegram.ParseMode.MARKDOWN)

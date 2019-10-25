@@ -53,10 +53,12 @@ class Monitor(MonitorBase):
     .. attribute:: bot_chat_id
 
         Telegram chatid to send messages to.
+
     """
 
     def __init__(self, url, bot_chat_id, bot_token, address, ip, bot=False, chain_id='M'):
-        """Constructor."""
+        """Constructor.
+        """
         super().__init__(url, bot_chat_id, bot_token)
         self.address = address
         self.ip = ip
@@ -71,13 +73,19 @@ class Monitor(MonitorBase):
         self.logger = logging.getLogger(__name__)
 
     def _init_bot(self):
-        """Telegram Bot Authorization Token."""
+        """Telegram Bot Authorization Token.
+        """
         self.bot = telegram.Bot(token=self.bot_token)
         self.bot.send_message(self.bot_chat_id, 'Hi, this is *cereal*, chat bot initialized!',
                               parse_mode=telegram.ParseMode.MARKDOWN)
 
     def address_monitor(self, address=None):
-        """Monitor for addresses on VSYS chain."""
+        """Monitor for addresses on VSYS chain.
+
+        :param address: list of address to be monitored
+        :return:
+
+        """
         if address:
             for s in address:
                 self._get_txs(s)
@@ -106,7 +114,12 @@ class Monitor(MonitorBase):
         return txs
 
     def ip_monitor(self, ip=None):
-        """Monitor for ips of VSYS nodes."""
+        """Monitor for ips of VSYS nodes.
+
+        :param ip: ip to be monitored
+        :return:
+
+        """
         dic = {}
         if ip:
             for i in ip:

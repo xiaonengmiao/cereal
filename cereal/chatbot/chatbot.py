@@ -52,10 +52,12 @@ class ChatBot(ChatBotBase):
     .. attribute:: url
 
         VSYS full node url with which to get info.
+
     """
 
     def __init__(self, url, bot_token):
-        """Constructor."""
+        """Constructor.
+        """
         super().__init__(url, bot_token)
         self.update_id = None
         self.wrapper = Wrapper(url)
@@ -65,11 +67,13 @@ class ChatBot(ChatBotBase):
         self.logger = logging.getLogger(__name__)
 
     def _init_bot(self):
-        """Telegram Bot Authorization Token."""
+        """Telegram Bot Authorization Token.
+        """
         self.bot = telegram.Bot(token=self.bot_token)
 
     def run(self):
-        """Run the bot."""
+        """Run the bot.
+        """
         # get the first pending update_id, this is so we can skip over it in case
         # we get an "Unauthorized" exception.
         try:
@@ -101,29 +105,29 @@ class ChatBot(ChatBotBase):
                             reply = self.get_response(update.message.text[1:])
                         except KeyError:
                             reply = None
-                            self.logger.info('{} is not valid address'.format(update.message.text[1:]))
+                            self.logger.debug('{} is not valid address'.format(update.message.text[1:]))
                             update.message.reply_text('{} is not valid address'.format(update.message.text[1:]))
                         if isinstance(reply, pd.DataFrame) and not reply.empty:
-                            self.logger.info(reply)
+                            self.logger.debug(reply)
                             reply.to_csv('/tmp/cereal_chat_bot.csv')
                             with open('/tmp/cereal_chat_bot.csv', 'rb') as cereal_chat_bot_txs:
                                 update.message.reply_document(cereal_chat_bot_txs)
                             os.remove('/tmp/cereal_chat_bot.csv')
                         elif isinstance(reply, str) and reply:
-                            self.logger.info(reply)
+                            self.logger.debug(reply)
                             update.message.reply_text(reply)
                     else:
                         # reply = get_response_tuling(update.message.text)
-                        # self.logger.info(reply)
+                        # self.logger.debug(reply)
                         # update.message.reply_text(reply)
                         reply = get_response_xiaomi(update.message.text)
-                        self.logger.info(reply)
+                        self.logger.debug(reply)
                         update.message.reply_text(reply, parse_mode=telegram.ParseMode.MARKDOWN)
                         # default_reply = update.message.text
                         # update.message.reply_text(default_reply)
                 elif update.message.sticker:
                     reply = get_response_xiaomi(update.message.sticker.emoji)
-                    self.logger.info(reply)
+                    self.logger.debug(reply)
                     update.message.reply_text(reply, parse_mode=telegram.ParseMode.MARKDOWN)
 
     def get_response(self, msg):
@@ -184,7 +188,7 @@ def get_response_xiaomi(msg):
                "\\u003d": "=", "\\": "", "[link url\\u003d": "", "[/link]": "", "]": "", "[": ""} # define desired replacements here
         # use these three lines to do the replacement
         rep = dict((re.escape(k), v) for k, v in rep.items())
-        #Python 3 renamed dict.iteritems to dict.items so use rep.items() for latest versions
+        # Python 3 renamed dict.iteritems to dict.items so use rep.items() for latest versions
         pattern = re.compile("|".join(rep.keys()))
         # pattern = re.compile('\\\\n|\\\\t|\\\\r')
         r = pattern.sub(lambda m: rep[re.escape(m.group(0))], r[1])
