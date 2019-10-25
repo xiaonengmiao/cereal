@@ -46,7 +46,7 @@ from cereal import ChatBot
 from cereal.utils.telegramlogger import TelegramHandler
 from apscheduler.schedulers.blocking import BlockingScheduler
 
-LOGGER = logging.getLogger()
+LOGGER = logging.getLogger("cereal")
 
 
 def log_dict(dictionary, indent=0):
@@ -104,7 +104,7 @@ if __name__ == "__main__":
         bot_token = config.get("telegram", []).get("bot_token", [])
         bot = telegram.Bot(token=bot_token)
         handler = TelegramHandler(bot, bot_chatID, logging.INFO)
-        LOGGER.addHandler(handler)
+        logging.getLogger().addHandler(handler)
         bot.send_message(bot_chatID, 'Hi, this is *cereal*, will serve as _cereal reporter_!',
                          parse_mode=telegram.ParseMode.MARKDOWN)
         LOGGER.debug("Inited telegram bot")
