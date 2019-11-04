@@ -25,7 +25,10 @@ __doc__ = """
 """
 
 import telegram
+from time import sleep
 from logging import Handler
+
+from telegram.error import NetworkError, Unauthorized
 
 
 class TelegramHandler(Handler):
@@ -55,4 +58,10 @@ class TelegramHandler(Handler):
         if not record.levelno == self.log_level:
             return
         log_entry = self.format(record)
-        return self.bot.send_message(self.bot_chat_id, log_entry, parse_mode=telegram.ParseMode.MARKDOWN)
+        try:
+            self.bot.send_message(self.bot_chat_id, log_entry, parse_mode=telegram.ParseMode.MARKDOWN)
+        except NetworkError:
+            sleep(1)
+        except Unauthorized:
+            # The user has removed or blocked the bot.
+            sleep(1)

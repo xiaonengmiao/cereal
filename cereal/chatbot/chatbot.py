@@ -24,19 +24,21 @@ __doc__ = """
 :mod:`cereal.chatbot.chatbot` provides a chat bot for Cereal.
 """
 
-import os
 import json
 import logging
-import telegram
-import requests, re
-import pandas as pd
-
+import os
 from time import sleep
-from . import ChatBotBase
 from urllib.parse import quote
-from ..utils.wrapper import Wrapper
-from ..utils.tools import make_visualizer
+
+import pandas as pd
+import re
+import requests
+import telegram
 from telegram.error import NetworkError, Unauthorized
+
+from . import ChatBotBase
+from ..utils.tools import make_visualizer
+from ..utils.wrapper import Wrapper
 
 
 class ChatBot(ChatBotBase):
