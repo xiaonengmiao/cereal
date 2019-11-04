@@ -1,6 +1,6 @@
 #!/bin/env python
 """cereal: a Python library for exploring cryptocurrency markets.
-usage: cereal [--version] [--debug] [--config=<path>] [--help]
+usage: cereal [--version] [--debug] [--config=<ph>] [--help]
            [--telegram] [<command>] [<args>...]
 
 Options:
@@ -8,6 +8,7 @@ Options:
     -h, --help            Show this help screen.
     -v, --version         Show cereal version.
     -t, --telegram        Use telegram bot.
+    -c, --config=<ph>     Path to config file.
 """
 
 __copyright__ = "Copyright (C) 2019 Techcat_ Haohan Li"
@@ -40,9 +41,7 @@ import telegram
 import subprocess
 
 from docopt import docopt
-from cereal import version
-from cereal import Monitor
-from cereal import ChatBot
+from cereal import version, Monitor, ChatBot
 from cereal.utils.telegramlogger import TelegramHandler
 from apscheduler.schedulers.blocking import BlockingScheduler
 
