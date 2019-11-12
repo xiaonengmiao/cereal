@@ -11,6 +11,32 @@ Cereal is a Python library for exploring cryptocurrency markets.
 
 CEREAL is a recursive acronym for Crypto ExploreR Even Analysis and Learn.
 
+# How to use
+
+```bash
+cereal: a Python library for exploring cryptocurrency markets.
+usage: cereal [--version] [--debug] [--config=<ph>] [--help]
+           [--telegram] [<command>] [<args>...]
+
+Options:
+    -d, --debug           Show debugging info.
+    -h, --help            Show this help screen.
+    -v, --version         Show cereal version.
+    -t, --telegram        Use telegram bot.
+    -c, --config=<ph>     Path to config file.
+```
+
+Try `cereal --version` and `cereal --help` to see more information.
+
+## Commend
+
+- cereal deploy -- deploy vsys node to remote aws EC2 server
+- cereal guard -- guard vsys node locally (restart node if height is not changed)
+- cereal monitor -- monitor vsys address (if these addresses have new transaction)
+- cereal ipmonitor -- monitor vsys node ip (if node of these ips are working properly)
+- cereal chatbot -- start a chat bot on Telegram to ask some questions
+
+
 # Test
 
 Using `pytest` framework makes it easy to write small tests, yet scales to support complex functional testing for applications and libraries.
@@ -23,7 +49,7 @@ pytest
 
 # [Documentation](/README.md)
 
-View the [documentation](/README.md)
+View the [documentation](https://icermli.github.io/cereal/)
 for Cereal on Read the Docs.
 
 To build the documentation yourself using [Sphinx](http://www.sphinx-doc.org/), run:
