@@ -177,6 +177,7 @@ def get_response_tuling(msg):
     except requests.exceptions.RequestException:
         return
 
+
 def get_response_xiaomi(msg):
     ini = "{'sessionId':'09e2aca4d0a541f88eecc77c03a8b393','robotId':'webbot','userId':'462d49d3742745bb98f7538c42f9f874','body':{'content':'" + msg + "'},'type':'txt'}&ts=1529917589648"
     url = "http://i.xiaoi.com/robot/webrobot?&callback=__webrobot_processMsg&data=" + quote(ini)

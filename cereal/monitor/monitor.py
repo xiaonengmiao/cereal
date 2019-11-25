@@ -101,8 +101,7 @@ class Monitor(MonitorBase):
         txs = self.wrapper.request(url)[0]
         cnt_time = int(time.time() * 1000000000) // 6000000000 * 6000000000
         check_time = 5 * 60 * 1000000000
-        # txs = [x for x in txs if x['timestamp'] > cnt_time-check_time]
-        txs = txs[:2]
+        txs = [x for x in txs if x['timestamp'] > cnt_time-check_time]
         if txs:
             df = make_visualizer(txs)
             self.logger.info(df)
