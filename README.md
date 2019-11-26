@@ -49,7 +49,7 @@ pytest
 
 # Donate
 
-[![Bitcoin Donate Button](https://icermli.github.io/cereal/donate/Bitcoin-Donate-button.png)](https://icermli.github.io/cereal/donate/index.html)
+[![Bitcoin Donate Button](https://icermli.github.io/cereal/donate/Bitcoin-Donate-button.png)](https://icermli.github.io/cereal/donate/)
 
 # [Documentation](https://icermli.github.io/cereal/doc/build/)
 
