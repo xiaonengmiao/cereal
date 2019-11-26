@@ -47,6 +47,10 @@ To execute it:
 pytest
 ```
 
+# Donate
+
+[![Bitcoin Donate Button](donate/Bitcoin-Donate-button.png)](donate/index.htm)
+
 # [Documentation](/README.md)
 
 View the [documentation](https://icermli.github.io/cereal/)
