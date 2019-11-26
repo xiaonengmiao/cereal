@@ -57,19 +57,21 @@
 <span class="s2">:mod:`cereal.chatbot.chatbot` provides a chat bot for Cereal.</span>
 <span class="s2">&quot;&quot;&quot;</span>
 
-<span class="kn">import</span> <span class="nn">os</span>
 <span class="kn">import</span> <span class="nn">json</span>
 <span class="kn">import</span> <span class="nn">logging</span>
-<span class="kn">import</span> <span class="nn">telegram</span>
-<span class="kn">import</span> <span class="nn">requests</span><span class="o">,</span> <span class="nn">re</span>
-<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
-
+<span class="kn">import</span> <span class="nn">os</span>
 <span class="kn">from</span> <span class="nn">time</span> <span class="k">import</span> <span class="n">sleep</span>
-<span class="kn">from</span> <span class="nn">.</span> <span class="k">import</span> <span class="n">ChatBotBase</span>
 <span class="kn">from</span> <span class="nn">urllib.parse</span> <span class="k">import</span> <span class="n">quote</span>
-<span class="kn">from</span> <span class="nn">..utils.wrapper</span> <span class="k">import</span> <span class="n">Wrapper</span>
-<span class="kn">from</span> <span class="nn">..utils.tools</span> <span class="k">import</span> <span class="n">make_visualizer</span>
+
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">re</span>
+<span class="kn">import</span> <span class="nn">requests</span>
+<span class="kn">import</span> <span class="nn">telegram</span>
 <span class="kn">from</span> <span class="nn">telegram.error</span> <span class="k">import</span> <span class="n">NetworkError</span><span class="p">,</span> <span class="n">Unauthorized</span>
+
+<span class="kn">from</span> <span class="nn">.</span> <span class="k">import</span> <span class="n">ChatBotBase</span>
+<span class="kn">from</span> <span class="nn">..utils.tools</span> <span class="k">import</span> <span class="n">make_visualizer</span>
+<span class="kn">from</span> <span class="nn">..utils.wrapper</span> <span class="k">import</span> <span class="n">Wrapper</span>
 
 
 <div class="viewcode-block" id="ChatBot"><a class="viewcode-back" href="../../../chatbot.html#cereal.chatbot.chatbot.ChatBot">[docs]</a><span class="k">class</span> <span class="nc">ChatBot</span><span class="p">(</span><span class="n">ChatBotBase</span><span class="p">):</span>
@@ -85,10 +87,12 @@
 <span class="sd">    .. attribute:: url</span>
 
 <span class="sd">        VSYS full node url with which to get info.</span>
+
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">url</span><span class="p">,</span> <span class="n">bot_token</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Constructor.&quot;&quot;&quot;</span>
+        <span class="sd">&quot;&quot;&quot;Constructor.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">bot_token</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">update_id</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">wrapper</span> <span class="o">=</span> <span class="n">Wrapper</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
@@ -98,11 +102,13 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">_init_bot</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Telegram Bot Authorization Token.&quot;&quot;&quot;</span>
+        <span class="sd">&quot;&quot;&quot;Telegram Bot Authorization Token.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">bot</span> <span class="o">=</span> <span class="n">telegram</span><span class="o">.</span><span class="n">Bot</span><span class="p">(</span><span class="n">token</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">bot_token</span><span class="p">)</span>
 
 <div class="viewcode-block" id="ChatBot.run"><a class="viewcode-back" href="../../../chatbot.html#cereal.chatbot.chatbot.ChatBot.run">[docs]</a>    <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Run the bot.&quot;&quot;&quot;</span>
+        <span class="sd">&quot;&quot;&quot;Run the bot.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># get the first pending update_id, this is so we can skip over it in case</span>
         <span class="c1"># we get an &quot;Unauthorized&quot; exception.</span>
         <span class="k">try</span><span class="p">:</span>
@@ -128,32 +134,36 @@
             <span class="k">if</span> <span class="n">update</span><span class="o">.</span><span class="n">message</span><span class="p">:</span>
                 <span class="c1"># and update.message.text[:4] == &#39;微软小冰&#39;:  # your bot can receive updates without messages</span>
                 <span class="c1"># Reply to the message</span>
-                <span class="n">message</span> <span class="o">=</span> <span class="n">update</span><span class="o">.</span><span class="n">message</span><span class="o">.</span><span class="n">text</span>
-                <span class="k">if</span> <span class="n">update</span><span class="o">.</span><span class="n">message</span><span class="o">.</span><span class="n">text</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;/&#39;</span><span class="p">:</span>
-                    <span class="k">try</span><span class="p">:</span>
-                        <span class="n">reply</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_response</span><span class="p">(</span><span class="n">message</span><span class="p">[</span><span class="mi">1</span><span class="p">:])</span>
-                    <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
-                        <span class="n">reply</span> <span class="o">=</span> <span class="kc">None</span>
-                        <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">{}</span><span class="s1"> is not valid address&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">message</span><span class="p">[</span><span class="mi">1</span><span class="p">:]))</span>
-                        <span class="n">update</span><span class="o">.</span><span class="n">message</span><span class="o">.</span><span class="n">reply_text</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">{}</span><span class="s1"> is not valid address&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">message</span><span class="p">[</span><span class="mi">1</span><span class="p">:]))</span>
-                    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">reply</span><span class="p">,</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">)</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">reply</span><span class="o">.</span><span class="n">empty</span><span class="p">:</span>
-                        <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="n">reply</span><span class="p">)</span>
-                        <span class="n">reply</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="s1">&#39;/tmp/cereal_chat_bot.csv&#39;</span><span class="p">)</span>
-                        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s1">&#39;/tmp/cereal_chat_bot.csv&#39;</span><span class="p">,</span> <span class="s1">&#39;rb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">cereal_chat_bot_txs</span><span class="p">:</span>
-                            <span class="n">update</span><span class="o">.</span><span class="n">message</span><span class="o">.</span><span class="n">reply_document</span><span class="p">(</span><span class="n">cereal_chat_bot_txs</span><span class="p">)</span>
-                        <span class="n">os</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="s1">&#39;/tmp/cereal_chat_bot.csv&#39;</span><span class="p">)</span>
-                    <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">reply</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span> <span class="ow">and</span> <span class="n">reply</span><span class="p">:</span>
-                        <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="n">reply</span><span class="p">)</span>
-                        <span class="n">update</span><span class="o">.</span><span class="n">message</span><span class="o">.</span><span class="n">reply_text</span><span class="p">(</span><span class="n">reply</span><span class="p">)</span>
-                <span class="k">else</span><span class="p">:</span>
-                    <span class="c1"># reply = get_response_tuling(message)</span>
-                    <span class="c1"># self.logger.info(reply)</span>
-                    <span class="c1"># update.message.reply_text(reply)</span>
-                    <span class="n">reply</span> <span class="o">=</span> <span class="n">get_response_xiaomi</span><span class="p">(</span><span class="n">message</span><span class="p">)</span>
-                    <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="n">reply</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">update</span><span class="o">.</span><span class="n">message</span><span class="o">.</span><span class="n">text</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="n">update</span><span class="o">.</span><span class="n">message</span><span class="o">.</span><span class="n">text</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;/&#39;</span><span class="p">:</span>
+                        <span class="k">try</span><span class="p">:</span>
+                            <span class="n">reply</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_response</span><span class="p">(</span><span class="n">update</span><span class="o">.</span><span class="n">message</span><span class="o">.</span><span class="n">text</span><span class="p">[</span><span class="mi">1</span><span class="p">:])</span>
+                        <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
+                            <span class="n">reply</span> <span class="o">=</span> <span class="kc">None</span>
+                            <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">{}</span><span class="s1"> is not valid address&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">update</span><span class="o">.</span><span class="n">message</span><span class="o">.</span><span class="n">text</span><span class="p">[</span><span class="mi">1</span><span class="p">:]))</span>
+                            <span class="n">update</span><span class="o">.</span><span class="n">message</span><span class="o">.</span><span class="n">reply_text</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">{}</span><span class="s1"> is not valid address&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">update</span><span class="o">.</span><span class="n">message</span><span class="o">.</span><span class="n">text</span><span class="p">[</span><span class="mi">1</span><span class="p">:]))</span>
+                        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">reply</span><span class="p">,</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">)</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">reply</span><span class="o">.</span><span class="n">empty</span><span class="p">:</span>
+                            <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="n">reply</span><span class="p">)</span>
+                            <span class="n">reply</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="s1">&#39;/tmp/cereal_chat_bot.csv&#39;</span><span class="p">)</span>
+                            <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s1">&#39;/tmp/cereal_chat_bot.csv&#39;</span><span class="p">,</span> <span class="s1">&#39;rb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">cereal_chat_bot_txs</span><span class="p">:</span>
+                                <span class="n">update</span><span class="o">.</span><span class="n">message</span><span class="o">.</span><span class="n">reply_document</span><span class="p">(</span><span class="n">cereal_chat_bot_txs</span><span class="p">)</span>
+                            <span class="n">os</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="s1">&#39;/tmp/cereal_chat_bot.csv&#39;</span><span class="p">)</span>
+                        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">reply</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span> <span class="ow">and</span> <span class="n">reply</span><span class="p">:</span>
+                            <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="n">reply</span><span class="p">)</span>
+                            <span class="n">update</span><span class="o">.</span><span class="n">message</span><span class="o">.</span><span class="n">reply_text</span><span class="p">(</span><span class="n">reply</span><span class="p">)</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="c1"># reply = get_response_tuling(update.message.text)</span>
+                        <span class="c1"># self.logger.debug(reply)</span>
+                        <span class="c1"># update.message.reply_text(reply)</span>
+                        <span class="n">reply</span> <span class="o">=</span> <span class="n">get_response_xiaomi</span><span class="p">(</span><span class="n">update</span><span class="o">.</span><span class="n">message</span><span class="o">.</span><span class="n">text</span><span class="p">)</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="n">reply</span><span class="p">)</span>
+                        <span class="n">update</span><span class="o">.</span><span class="n">message</span><span class="o">.</span><span class="n">reply_text</span><span class="p">(</span><span class="n">reply</span><span class="p">,</span> <span class="n">parse_mode</span><span class="o">=</span><span class="n">telegram</span><span class="o">.</span><span class="n">ParseMode</span><span class="o">.</span><span class="n">MARKDOWN</span><span class="p">)</span>
+                        <span class="c1"># default_reply = update.message.text</span>
+                        <span class="c1"># update.message.reply_text(default_reply)</span>
+                <span class="k">elif</span> <span class="n">update</span><span class="o">.</span><span class="n">message</span><span class="o">.</span><span class="n">sticker</span><span class="p">:</span>
+                    <span class="n">reply</span> <span class="o">=</span> <span class="n">get_response_xiaomi</span><span class="p">(</span><span class="n">update</span><span class="o">.</span><span class="n">message</span><span class="o">.</span><span class="n">sticker</span><span class="o">.</span><span class="n">emoji</span><span class="p">)</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="n">reply</span><span class="p">)</span>
                     <span class="n">update</span><span class="o">.</span><span class="n">message</span><span class="o">.</span><span class="n">reply_text</span><span class="p">(</span><span class="n">reply</span><span class="p">,</span> <span class="n">parse_mode</span><span class="o">=</span><span class="n">telegram</span><span class="o">.</span><span class="n">ParseMode</span><span class="o">.</span><span class="n">MARKDOWN</span><span class="p">)</span></div>
-                    <span class="c1"># default_reply = message</span>
-                    <span class="c1"># update.message.reply_text(default_reply)</span>
 
     <span class="k">def</span> <span class="nf">get_response</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">msg</span><span class="p">):</span>
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
@@ -200,6 +210,7 @@
     <span class="k">except</span> <span class="n">requests</span><span class="o">.</span><span class="n">exceptions</span><span class="o">.</span><span class="n">RequestException</span><span class="p">:</span>
         <span class="k">return</span>
 
+
 <span class="k">def</span> <span class="nf">get_response_xiaomi</span><span class="p">(</span><span class="n">msg</span><span class="p">):</span>
     <span class="n">ini</span> <span class="o">=</span> <span class="s2">&quot;{&#39;sessionId&#39;:&#39;09e2aca4d0a541f88eecc77c03a8b393&#39;,&#39;robotId&#39;:&#39;webbot&#39;,&#39;userId&#39;:&#39;462d49d3742745bb98f7538c42f9f874&#39;,&#39;body&#39;:{&#39;content&#39;:&#39;&quot;</span> <span class="o">+</span> <span class="n">msg</span> <span class="o">+</span> <span class="s2">&quot;&#39;},&#39;type&#39;:&#39;txt&#39;}&amp;ts=1529917589648&quot;</span>
     <span class="n">url</span> <span class="o">=</span> <span class="s2">&quot;http://i.xiaoi.com/robot/webrobot?&amp;callback=__webrobot_processMsg&amp;data=&quot;</span> <span class="o">+</span> <span class="n">quote</span><span class="p">(</span><span class="n">ini</span><span class="p">)</span>
@@ -207,12 +218,13 @@
               <span class="s2">&quot;XISESSIONID&quot;</span><span class="p">:</span> <span class="s2">&quot;hlbnd1oiwar01dfje825gavcn&quot;</span><span class="p">,</span> <span class="s2">&quot;nonce&quot;</span><span class="p">:</span> <span class="s2">&quot;273765&quot;</span><span class="p">,</span> <span class="s2">&quot;hibext_instdsigdip2&quot;</span><span class="p">:</span> <span class="s2">&quot;1&quot;</span><span class="p">}</span>
     <span class="k">try</span><span class="p">:</span>
         <span class="n">r</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">cookies</span><span class="o">=</span><span class="n">cookie</span><span class="p">)</span>
-        <span class="n">pattern</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;\&quot;fontColor\&quot;:0,\&quot;content\&quot;:\&quot;(.*?)\&quot;&#39;</span><span class="p">)</span>
+        <span class="n">pattern</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;\&quot;fontColor\&quot;:0,\&quot;content\&quot;:\&quot;(.*?)\&quot;,\&quot;emoticons&#39;</span><span class="p">)</span>
         <span class="n">r</span> <span class="o">=</span> <span class="n">pattern</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="n">r</span><span class="o">.</span><span class="n">text</span><span class="p">)</span>
-        <span class="n">rep</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;</span><span class="se">\\</span><span class="s2">n&quot;</span><span class="p">:</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="s2">&quot;</span><span class="se">\\</span><span class="s2">t&quot;</span><span class="p">:</span> <span class="s2">&quot;</span><span class="se">\t</span><span class="s2">&quot;</span><span class="p">,</span> <span class="s2">&quot;</span><span class="se">\\</span><span class="s2">r&quot;</span><span class="p">:</span> <span class="s2">&quot;</span><span class="se">\r</span><span class="s2">&quot;</span><span class="p">,</span> <span class="s2">&quot;</span><span class="se">\\</span><span class="s2">u003c&quot;</span><span class="p">:</span> <span class="s2">&quot;&lt;&quot;</span><span class="p">,</span> <span class="s2">&quot;</span><span class="se">\\</span><span class="s2">u003e&quot;</span><span class="p">:</span> <span class="s2">&quot;&gt;&quot;</span><span class="p">}</span> <span class="c1"># define desired replacements here</span>
+        <span class="n">rep</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;</span><span class="se">\\</span><span class="s2">n&quot;</span><span class="p">:</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="s2">&quot;</span><span class="se">\\</span><span class="s2">t&quot;</span><span class="p">:</span> <span class="s2">&quot;</span><span class="se">\t</span><span class="s2">&quot;</span><span class="p">,</span> <span class="s2">&quot;</span><span class="se">\\</span><span class="s2">r&quot;</span><span class="p">:</span> <span class="s2">&quot;</span><span class="se">\r</span><span class="s2">&quot;</span><span class="p">,</span> <span class="s2">&quot;</span><span class="se">\\</span><span class="s2">u003c&quot;</span><span class="p">:</span> <span class="s2">&quot;&lt;&quot;</span><span class="p">,</span> <span class="s2">&quot;</span><span class="se">\\</span><span class="s2">u003e&quot;</span><span class="p">:</span> <span class="s2">&quot;&gt;&quot;</span><span class="p">,</span>
+               <span class="s2">&quot;</span><span class="se">\\</span><span class="s2">u003d&quot;</span><span class="p">:</span> <span class="s2">&quot;=&quot;</span><span class="p">,</span> <span class="s2">&quot;</span><span class="se">\\</span><span class="s2">&quot;</span><span class="p">:</span> <span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="s2">&quot;[link url</span><span class="se">\\</span><span class="s2">u003d&quot;</span><span class="p">:</span> <span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="s2">&quot;[/link]&quot;</span><span class="p">:</span> <span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="s2">&quot;]&quot;</span><span class="p">:</span> <span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="s2">&quot;[&quot;</span><span class="p">:</span> <span class="s2">&quot;&quot;</span><span class="p">}</span> <span class="c1"># define desired replacements here</span>
         <span class="c1"># use these three lines to do the replacement</span>
         <span class="n">rep</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">((</span><span class="n">re</span><span class="o">.</span><span class="n">escape</span><span class="p">(</span><span class="n">k</span><span class="p">),</span> <span class="n">v</span><span class="p">)</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">rep</span><span class="o">.</span><span class="n">items</span><span class="p">())</span>
-        <span class="c1">#Python 3 renamed dict.iteritems to dict.items so use rep.items() for latest versions</span>
+        <span class="c1"># Python 3 renamed dict.iteritems to dict.items so use rep.items() for latest versions</span>
         <span class="n">pattern</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s2">&quot;|&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">rep</span><span class="o">.</span><span class="n">keys</span><span class="p">()))</span>
         <span class="c1"># pattern = re.compile(&#39;\\\\n|\\\\t|\\\\r&#39;)</span>
         <span class="n">r</span> <span class="o">=</span> <span class="n">pattern</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="k">lambda</span> <span class="n">m</span><span class="p">:</span> <span class="n">rep</span><span class="p">[</span><span class="n">re</span><span class="o">.</span><span class="n">escape</span><span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">0</span><span class="p">))],</span> <span class="n">r</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>

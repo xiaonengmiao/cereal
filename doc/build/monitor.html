@@ -39,7 +39,7 @@
 <p><a class="reference internal" href="#module-cereal.monitor" title="cereal.monitor"><code class="xref py py-mod docutils literal notranslate"><span class="pre">cereal.monitor</span></code></a> provides monitoring ability for Cereal.</p>
 <dl class="class">
 <dt id="cereal.monitor.MonitorBase">
-<em class="property">class </em><code class="sig-prename descclassname">cereal.monitor.</code><code class="sig-name descname">MonitorBase</code><span class="sig-paren">(</span><em class="sig-param">url</em>, <em class="sig-param">bot_chat_id</em>, <em class="sig-param">bot_token</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cereal/monitor.html#MonitorBase"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cereal.monitor.MonitorBase" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">cereal.monitor.</code><code class="sig-name descname">MonitorBase</code><span class="sig-paren">(</span><em class="sig-param">url=None</em>, <em class="sig-param">bot_chat_id=None</em>, <em class="sig-param">bot_token='Talk to https://telegram.me/botfather to get one!'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cereal/monitor.html#MonitorBase"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cereal.monitor.MonitorBase" title="Permalink to this definition">¶</a></dt>
 <dd><p>Base Class for monitor used as monitoring agent.</p>
 <p>It can be used to create a monitor for vsys address or ip,
 using pandas to process data.</p>
@@ -95,12 +95,28 @@ using pandas to process data.</p>
 <dt id="cereal.monitor.monitor.Monitor.address_monitor">
 <code class="sig-name descname">address_monitor</code><span class="sig-paren">(</span><em class="sig-param">address=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cereal/monitor/monitor.html#Monitor.address_monitor"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cereal.monitor.monitor.Monitor.address_monitor" title="Permalink to this definition">¶</a></dt>
 <dd><p>Monitor for addresses on VSYS chain.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>address</strong> – list of address to be monitored</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p></p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="method">
 <dt id="cereal.monitor.monitor.Monitor.ip_monitor">
 <code class="sig-name descname">ip_monitor</code><span class="sig-paren">(</span><em class="sig-param">ip=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cereal/monitor/monitor.html#Monitor.ip_monitor"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cereal.monitor.monitor.Monitor.ip_monitor" title="Permalink to this definition">¶</a></dt>
 <dd><p>Monitor for ips of VSYS nodes.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>ip</strong> – ip to be monitored</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p></p>
+</dd>
+</dl>
 </dd></dl>
 
 </dd></dl>
