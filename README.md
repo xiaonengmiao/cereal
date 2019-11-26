@@ -49,11 +49,11 @@ pytest
 
 # Donate
 
-[![Bitcoin Donate Button](donate/Bitcoin-Donate-button.png)](donate/index.htm)
+[![Bitcoin Donate Button](https://icermli.github.io/cereal/donate/Bitcoin-Donate-button.png)](https://icermli.github.io/cereal/donate/index.html)
 
-# [Documentation](/README.md)
+# [Documentation](https://icermli.github.io/cereal/docs/)
 
-View the [documentation](https://icermli.github.io/cereal/)
+View the [documentation](https://icermli.github.io/cereal/docs/)
 for Cereal on Read the Docs.
 
 To build the documentation yourself using [Sphinx](http://www.sphinx-doc.org/), run:
