@@ -35,6 +35,7 @@ Try `cereal --version` and `cereal --help` to see more information.
 - cereal monitor -- monitor vsys address (if these addresses have new transaction)
 - cereal ipmonitor -- monitor vsys node ip (if node of these ips are working properly)
 - cereal chatbot -- start a chat bot on Telegram to ask some questions
+- cereal explorer -- start a minimalist vsys explorer [source code](https://github.com/Icermli/vappa)
 
 
 # Test
