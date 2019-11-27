@@ -1,0 +1,3 @@
+[submodule "cereal/contrib/vappa"]
+	path = cereal/contrib/vappa
+	url = git@github.com:Icermli/vappa.git
