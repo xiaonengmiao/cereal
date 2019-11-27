@@ -155,9 +155,10 @@ if __name__ == "__main__":
         scheduler.print_jobs()
         try:
             scheduler.start()
+            atexit.register(lambda: scheduler.shutdown())
         except KeyboardInterrupt as ex:
             LOGGER.info('Got SIGTERM! Terminating...')
-            atexit.register(lambda: scheduler.shutdown())
+            scheduler.shutdown()
 
     # handle VSYS ip monitoring
     if ARGUMENTS['<command>'] == 'ipmonitor':
@@ -186,9 +187,10 @@ if __name__ == "__main__":
         scheduler.print_jobs()
         try:
             scheduler.start()
+            atexit.register(lambda: scheduler.shutdown())
         except KeyboardInterrupt as ex:
             LOGGER.info('Got SIGTERM! Terminating...')
-            atexit.register(lambda: scheduler.shutdown())
+            scheduler.shutdown()
 
     # handle VSYS chat bot
     if ARGUMENTS['<command>'] == 'chatbot':
@@ -201,6 +203,15 @@ if __name__ == "__main__":
             chat_bot.run()
         except KeyboardInterrupt as ex:
             LOGGER.info('Quit chat bot...')
+            exit(0)
+
+    # handle VSYS explorer
+    if ARGUMENTS['<command>'] == 'explorer':
+        vappa_path = os.path.join(os.path.abspath(os.path.dirname(__file__)), '..', 'contrib', 'vappa', 'app.py')
+        try:
+            subprocess.call(['python', '{}'.format(vappa_path)])
+        except KeyboardInterrupt:
+            LOGGER.info('Quiting explorer process....')
             exit(0)
 
     if ARGUMENTS['<command>'] == 'start':

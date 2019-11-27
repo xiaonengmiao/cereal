@@ -46,6 +46,8 @@ def main():
               "python-telegram-bot",
               "apscheduler",
               "pandas",
+              "flask",
+              "waitress",
           ],
           )
 

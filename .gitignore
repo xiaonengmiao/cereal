@@ -10,3 +10,4 @@ __pycache__/
 cereal.egg-info/
 .ipynb_checkpoints/
 *.ipynb
+target/
