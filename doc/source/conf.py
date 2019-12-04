@@ -18,8 +18,8 @@
 # -- Project information -----------------------------------------------------
 
 project = 'Cereal'
-copyright = '2019, Techcat_ Haohan Li'
-author = 'Techcat_ Haohan Li'
+copyright = '2019, Haohan Li'
+author = 'Haohan Li'
 
 # The full version, including alpha/beta/rc tags
 release = '0.0.1'

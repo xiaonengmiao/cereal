@@ -1,4 +1,4 @@
-__copyright__ = "Copyright (C) 2019 Techcat_ Haohan Li"
+__copyright__ = "Copyright (C) 2019 Haohan Li"
 
 __license__ = """
 Permission is hereby granted, free of charge, to any person obtaining a copy
