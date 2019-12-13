@@ -48,6 +48,7 @@ def main():
               "pandas",
               "flask",
               "waitress",
+              "base58",
           ],
           )
 
