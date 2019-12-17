@@ -104,6 +104,14 @@ function box_warn()
   tput sgr 0
 }
 
+function cecho()
+{
+    bold=$(tput bold);
+    green=$(tput setaf 2);
+    reset=$(tput sgr0);
+    echo $bold$green"$@"$reset;
+}
+
 box_out "Detecting your OS.."
 
 PLATFORM='unknown'
@@ -192,7 +200,7 @@ function kill_old_process_by_port {
   local server=$2
   local port=$3
 
-  echo "To kill old process from port ($port) in $server; Start..."
+  cecho "To kill old process from port ($port) in $server; Start..."
   ssh -i "$key" "$server" "
   #!/bin/bash
   for i in $port
@@ -226,7 +234,7 @@ function check_update_server_JRE {
   local old_version=$3
   local new_version=$4
 
-  echo "To check java in $server (between $old_version and $new_version); Start..."
+  cecho "To check java in $server (between $old_version and $new_version); Start..."
   ssh -i "$key" "$server" "
   #!/bin/bash
   flag=0
@@ -284,7 +292,7 @@ function check_server_data_folder_clean {
   local config=$3
 
   local folder="$(grep 'directory' $config | sed 's/[ \t]*directory[ ]*=[ ]*//')"
-  echo $folder
+  cecho $folder
 
   ssh -i "$key" "$server" "
   #!/bin/bash
@@ -304,7 +312,7 @@ function send_file_to_server {
   local server_dir=$4
   local name=$5
 
-  echo "To send local $name file to the server ($server) by the directory ($server_dir)..."
+  cecho "To send local $name file to the server ($server) by the directory ($server_dir)..."
   scp -i "$key" "$target_file" "$server:$server_dir"
   ssh -i "$key" "$server" "chmod -R 700 $server_dir"
 }
@@ -314,9 +322,9 @@ function fetch_local_file {
   local name=$2
 
   if [[ -f $file ]]; then
-    echo "Fetch the $name local file by" $file
+    cecho "Fetch the $name local file by" $file
   else
-    echo "Error: The $name local file does not exist! Exit!"
+    cecho "Error: The $name local file does not exist! Exit!"
     exit
   fi
 }
@@ -332,7 +340,7 @@ function json_extract {
 
   if [[ ${json} =~ ${pair_regex} ]]; then
     local result=$(sed 's/^"\|"$//g' <<< "${BASH_REMATCH[1]}")
-    echo $result
+    cecho $result
   else
     return 0
   fi
@@ -344,15 +352,15 @@ function height_comparison {
   local change_time=$3
 
   if [[ $(( $height_max - $height_current )) -ge 0 ]]; then
-    echo $height_max $change_time
+    cecho $height_max $change_time
   else
-    echo $height_current $(( $change_time + 1 ))
+    cecho $height_current $(( $change_time + 1 ))
   fi
 }
 
 echo "======================= prepare to deploy in server $node_address ======================="
 
-# Read 
+# Read
 while true; do
   read -p "Do you wish to run or stop remote server? " yn
   case $yn in
@@ -370,7 +378,7 @@ if [[ $deploy_status == "stop" ]]; then
   exit
 fi
 
-# Read 
+# Read
 while true; do
   read -p "Do you wish to update files to remote server? " yn
   case $yn in
@@ -404,7 +412,7 @@ if [[ $file_update == "yes" ]]; then
   conf_file_path=$project_dir/*.conf
 fi
 
-# Read 
+# Read
 read -p "Please input ip address: " node_address
 
 # Read
@@ -434,8 +442,8 @@ mount_server "$node_pem_path" "$server_name@$node_address" \
 "$server_name" "$server_disk_dir" "$server_disk_device"
 
 if [[ "$file_update" == "yes" ]]; then
-  echo "The path of the jar file is" $jar_file_path
-  echo "The path of the config file is" $conf_file_path
+  cecho "The path of the jar file is" $jar_file_path
+  cecho "The path of the config file is" $conf_file_path
   fetch_local_file $jar_file_path "target"
   fetch_local_file $conf_file_path "config"
   while true; do
@@ -490,10 +498,10 @@ do
   height=$(json_extract "height" "$result")
 
   if [[ -n "$height" ]]; then
-    echo " > The height for the blockchain in the $i-th check is: $height"
+    cecho " > The height for the blockchain in the $i-th check is: $height"
     read height_max change_time < <(height_comparison "$height_max" "$height" "$change_time")
   else
-    echo " > The height for the blockchain in the \"$i\"-th check is: empty"
+    cecho " > The height for the blockchain in the \"$i\"-th check is: empty"
   fi
 
   sleep $deploy_height_test_wait_time
