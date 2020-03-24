@@ -10,6 +10,8 @@ server_project_dir="/home/$server_name/ssd/v-systems-main"
 server_log_file=$server_project_dir/"node.log"
 last_height=10000
 status_count=0
+s3_status=false
+s3_address="s3://v.systems-backup"
 
 function show_help() {
   echo "-v Show detailed logs"
@@ -220,6 +222,8 @@ function clean_replace_folder {
 }
 
 cecho "======================= prepare to start ======================="
+# Beyond this point, there'll be dragons
+# When I wrote this, only God and I understood what I was doing
 
 # Read
 while true; do
@@ -330,6 +334,9 @@ while true; do
       if [[ ${change_time} -gt 1 ]]; then
         node_status="Normal"
         clean_replace_folder "${server_project_dir}/folder2" "${server_project_dir}/folder3"
+        if $s3_status; then
+          aws s3 cp $server_project_dir/folder3 $s3_address --grants read=uri=http://acs.amazonaws.com/groups/global/AllUsers --recursive
+        fi
         status_count=0
       else
         node_status="Abnormal"
@@ -382,3 +389,4 @@ while true; do
   done
   printf "\n"
 done
+# Now, God only knows
