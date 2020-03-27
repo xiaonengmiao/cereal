@@ -335,7 +335,7 @@ while true; do
         node_status="Normal"
         clean_replace_folder "${server_project_dir}/folder2" "${server_project_dir}/folder3"
         if $s3_status; then
-          aws s3 cp $server_project_dir/folder3 $s3_address --grants read=uri=http://acs.amazonaws.com/groups/global/AllUsers --recursive
+          aws s3 sync $server_project_dir/folder3 $s3_address --delete
         fi
         status_count=0
       else

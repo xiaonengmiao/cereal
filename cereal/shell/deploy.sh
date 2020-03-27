@@ -351,10 +351,11 @@ function height_comparison {
   local height_current=$2
   local change_time=$3
 
+  # shellcheck disable=SC2004
   if [[ $(( $height_max - $height_current )) -ge 0 ]]; then
-    cecho $height_max $change_time
+    cecho "$height_max" "$change_time"
   else
-    cecho $height_current $(( $change_time + 1 ))
+    cecho "$height_current" $(( $change_time + 1 ))
   fi
 }
 
