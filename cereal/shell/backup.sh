@@ -3,12 +3,12 @@
 node_address="http://localhost"
 rest_api_port="9922"
 deploy_height_test_number=3
-deploy_height_test_wait_time=2
+deploy_height_test_wait_time=15
 port="9921 9922 9923"
 server_name="ubuntu"
 server_project_dir="/home/$server_name/ssd/v-systems-main"
 server_log_file=$server_project_dir/"node.log"
-last_height=10000
+last_height=100000
 status_count=0
 s3_status=false
 s3_address="s3://v.systems-backup"
