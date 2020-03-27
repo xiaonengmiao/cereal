@@ -161,9 +161,9 @@ function kill_old_process_by_port {
       pid=$temp_array
       echo " > > To kill pid: $pid"
       # shellcheck disable=SC2157
-      if [ ! -z \$pid ]; then
-        sudo kill -9 \$pid
-        while sudo kill -0 \$pid; do
+      if [ ! -z $pid ]; then
+        sudo kill -9 $pid
+        while sudo kill -0 $pid; do
           sleep 1
         done
       fi
@@ -339,6 +339,7 @@ while true; do
         fi
         status_count=0
       else
+        box_warn "restart from folder3"
         node_status="Abnormal"
         kill_old_process_by_port
         clean_replace_folder "${server_project_dir}/folder3" "${server_project_dir}/folder1"
