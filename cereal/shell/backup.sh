@@ -218,7 +218,7 @@ function clean_replace_folder {
     rm -r "$folder2"/*
   fi
   if [[ $(ls -A "$folder1") ]]; then
-    cp -R "$folder1/" "$folder2/"
+    cp -R "$folder1"/* "$folder2/"
   fi
 }
 
