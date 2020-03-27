@@ -3,7 +3,7 @@
 deploy_type="mainnet"
 deploy_file_update="yes" # yes: bash will send files from local to server
 deploy_status="run" # stop or run
-deploy_height_test_wait_time=3
+deploy_height_test_wait_time=15
 deploy_height_test_number=3
 deploy_wait_check_time=15
 
