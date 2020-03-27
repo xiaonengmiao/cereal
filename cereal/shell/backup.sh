@@ -218,7 +218,9 @@ function clean_replace_folder {
     # shellcheck disable=SC2115
     rm -r "$folder2"/*
   fi
-  cp -R "$folder1/" "$folder2/"
+  if [[ $(ls -A "$folder1") ]]; then
+    cp -R "$folder1/" "$folder2/"
+  fi
 }
 
 cecho "======================= prepare to start ======================="
