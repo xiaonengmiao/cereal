@@ -3,7 +3,7 @@
 deploy_type="mainnet"
 deploy_file_update="yes" # yes: bash will send files from local to server
 deploy_status="run" # stop or run
-deploy_height_test_wait_time=15
+deploy_height_test_wait_time=3
 deploy_height_test_number=3
 deploy_wait_check_time=15
 
@@ -140,7 +140,6 @@ function mount_server {
   mkdir -p $disk_dir
   device_name=\$(lsblk --sort SIZE | tail -1 | awk '{print \$1}')
   disk_device=\"$disk_dev/\$device_name\"
-
   if mountpoint -q \"$disk_dir\"; then
     echo \"Disk has already mounted\"
   else
@@ -181,15 +180,12 @@ function deploy_vsys_to_server {
       exit
     fi
   fi
-
   cd ssd/v-systems-main/
-
   number_files=\$(ls -A | wc -l)
   shopt -s extglob
   if [ \$number_files -gt 2 ]; then
     rm -r !(*.jar|*.conf)
   fi
-
   nohup java -jar \$target_file \$config_file > ./$log_file &
   echo \" > Deploy command has been run!\"
   "
@@ -251,7 +247,6 @@ function check_update_server_JRE {
   if [[ \"\$_java\" ]]; then
     version=\$(\"\$_java\" -version 2>&1 | awk -F '\"' '/version/ {print \$2}')
     echo \" > Java version: \$version\"
-
     if [[ ! \"\$version\" <  $old_version ]] && [[ \"\$version\" < $new_version ]]; then
         echo \" > JDK is 1.8, no update needed\"
     else
@@ -260,7 +255,6 @@ function check_update_server_JRE {
         flag=1
     fi
   fi
-
   if [ \"\$flag\" -eq 1 ]; then
       echo \" > Server ($server) is installing JDK 8...\"
       printf '\n' | sudo add-apt-repository ppa:openjdk-r/ppa
@@ -292,7 +286,7 @@ function check_server_data_folder_clean {
   local config=$3
 
   local folder="$(grep 'directory' $config | sed 's/[ \t]*directory[ ]*=[ ]*//')"
-  cecho $folder
+  echo $folder
 
   ssh -i "$key" "$server" "
   #!/bin/bash
@@ -340,7 +334,7 @@ function json_extract {
 
   if [[ ${json} =~ ${pair_regex} ]]; then
     local result=$(sed 's/^"\|"$//g' <<< "${BASH_REMATCH[1]}")
-    cecho $result
+    echo $result
   else
     return 0
   fi
@@ -352,9 +346,9 @@ function height_comparison {
   local change_time=$3
 
   if [[ $(( $height_max - $height_current )) -ge 0 ]]; then
-    cecho "$height_max" "$change_time"
+    echo $height_max $change_time
   else
-    cecho "$height_current" $(( $change_time + 1 ))
+    echo $height_current $(( $change_time + 1 ))
   fi
 }
 
@@ -539,33 +533,26 @@ function deploy_vsys_guard() {
     echo \"To test the HEIGHT of blockchain in $node_address\"
     rest_api_address=\"$node_address:$rest_api_port\"
     echo \" > Rest API is through\" $rest_api_address
-
     height_max=0
     change_time=0
     height=0
     for (( i=1; i<=$deploy_height_test_number; i++))
     do
-
       result=\$(curl -X GET --header 'Accept: application/json' -s "$rest_api_address/blocks/height")
       height=$(json_extract "height" "$result")
-
       if [[ -n "\$height" ]]; then
         echo \" > The height for the blockchain in the \$i-th check is: \$height\"
         read height_max change_time < <(height_comparison "\$height_max" "\$height" "\$change_time")
       else
         echo \" > The height for the blockchain in the \"\$i\"-th check is: empty\"
       fi
-
       sleep ${deploy_height_test_wait_time}
-
     done
-
     if [[ \${change_time} -gt 1 ]]; then
       node_status="Normal"
     else
       node_status="Abnormal"
     fi
-
     if [[ \"\$node_status\" == \"Normal\" ]]; then
       echo \" > Max height of the blockchain is: \$height_max\"
       echo \"The status of the blockchain is: \$node_status \$(( change_time - 1 )) times with height change out of $deploy_height_test_number checks\"
@@ -585,7 +572,6 @@ function deploy_vsys_guard() {
     count=0
     total=600
     pstr=\"[=======================================================================]\"
-
     while [[ \$count -lt \$total ]]; do
       sleep 0.5 # this is work
       count=\$(( \$count + 1 ))
